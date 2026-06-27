@@ -8,6 +8,8 @@ ehthumbs.db
 Thumbs.db
 Desktop.ini
 
+images/*
+
 .idea/
 .vscode/
 *.sublime-project
