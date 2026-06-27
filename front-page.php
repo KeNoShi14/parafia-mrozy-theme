@@ -4,9 +4,6 @@ get_header();
 
 <main id="primary" class="site-main" role="main">
 
-    <!-- =========================================
-         HERO SLIDER
-         ========================================= -->
     <?php
     $hero_posts = new WP_Query( [
         'post_type'      => 'post',
@@ -66,10 +63,87 @@ get_header();
     </section>
     <?php endif; ?>
 
+    <section class="section-wrapper aktualnosci-section">
+        <div class="container">
+            <h2 class="section-heading"><?php esc_html_e( 'Aktualności parafialne', 'parafia-mrozy' ); ?></h2>
 
-    <!-- =========================================
-         LICZNIK 100. ROCZNICY ERYGOWANIA
-         ========================================= -->
+            <?php
+            $aktualnosci = new WP_Query( [
+                'post_type'      => 'post',
+                'posts_per_page' => 6,
+                'category_name'  => 'aktualnosci',
+            ] );
+            ?>
+
+            <?php if ( $aktualnosci->have_posts() ) : ?>
+            <div class="posts-grid">
+                <?php while ( $aktualnosci->have_posts() ) : $aktualnosci->the_post();
+                    get_template_part( 'template-parts/card', 'post' );
+                endwhile; wp_reset_postdata(); ?>
+            </div>
+
+            <div class="read-more-wrap" style="margin-top:25px;">
+                <a href="<?php echo esc_url( get_category_link( get_category_by_slug( 'aktualnosci' ) ) ); ?>" class="read-more-link">
+                    <?php esc_html_e( 'Starsze wpisy &raquo;', 'parafia-mrozy' ); ?>
+                </a>
+            </div>
+            <?php else : ?>
+                <p><?php esc_html_e( 'Brak aktualności.', 'parafia-mrozy' ); ?></p>
+            <?php endif; ?>
+
+        </div>
+    </section>
+
+
+    <section class="section-wrapper ogloszenia-section">
+        <div class="container">
+            <h2 class="section-heading"><?php esc_html_e( 'Ogłoszenia parafialne', 'parafia-mrozy' ); ?></h2>
+
+            <?php
+            $ogloszenia = new WP_Query( [
+                'post_type'      => 'ogloszenia',
+                'posts_per_page' => 3,
+            ] );
+            ?>
+
+            <?php if ( $ogloszenia->have_posts() ) : ?>
+            <div class="posts-grid">
+                <?php while ( $ogloszenia->have_posts() ) : $ogloszenia->the_post();
+                    get_template_part( 'template-parts/card', 'post' );
+                endwhile; wp_reset_postdata(); ?>
+            </div>
+            <?php else : ?>
+                <p><?php esc_html_e( 'Brak ogłoszeń.', 'parafia-mrozy' ); ?></p>
+            <?php endif; ?>
+
+        </div>
+    </section>
+
+
+    <section class="section-wrapper intencje-section">
+        <div class="container">
+            <h2 class="section-heading"><?php esc_html_e( 'Intencje Mszy św.', 'parafia-mrozy' ); ?></h2>
+
+            <?php
+            $intencje = new WP_Query( [
+                'post_type'      => 'intencje',
+                'posts_per_page' => 3,
+            ] );
+            ?>
+
+            <?php if ( $intencje->have_posts() ) : ?>
+            <div class="posts-grid">
+                <?php while ( $intencje->have_posts() ) : $intencje->the_post();
+                    get_template_part( 'template-parts/card', 'intencja' );
+                endwhile; wp_reset_postdata(); ?>
+            </div>
+            <?php else : ?>
+                <p><?php esc_html_e( 'Brak intencji.', 'parafia-mrozy' ); ?></p>
+            <?php endif; ?>
+
+        </div>
+    </section>
+
     <section class="section-wrapper rocznica-section">
         <div class="container">
             <div class="rocznica-inner">
@@ -122,101 +196,6 @@ get_header();
     })();
     </script>
 
-
-    <!-- =========================================
-         AKTUALNOŚCI PARAFIALNE
-         ========================================= -->
-    <section class="section-wrapper aktualnosci-section">
-        <div class="container">
-            <h2 class="section-heading"><?php esc_html_e( 'Aktualności parafialne', 'parafia-mrozy' ); ?></h2>
-
-            <?php
-            $aktualnosci = new WP_Query( [
-                'post_type'      => 'post',
-                'posts_per_page' => 6,
-                'category_name'  => 'aktualnosci',
-            ] );
-            ?>
-
-            <?php if ( $aktualnosci->have_posts() ) : ?>
-            <div class="posts-grid">
-                <?php while ( $aktualnosci->have_posts() ) : $aktualnosci->the_post();
-                    get_template_part( 'template-parts/card', 'post' );
-                endwhile; wp_reset_postdata(); ?>
-            </div>
-
-            <div class="read-more-wrap" style="margin-top:25px;">
-                <a href="<?php echo esc_url( get_category_link( get_category_by_slug( 'aktualnosci' ) ) ); ?>" class="read-more-link">
-                    <?php esc_html_e( 'Starsze wpisy &raquo;', 'parafia-mrozy' ); ?>
-                </a>
-            </div>
-            <?php else : ?>
-                <p><?php esc_html_e( 'Brak aktualności.', 'parafia-mrozy' ); ?></p>
-            <?php endif; ?>
-
-        </div>
-    </section>
-
-
-    <!-- =========================================
-         OGŁOSZENIA PARAFIALNE
-         ========================================= -->
-    <section class="section-wrapper ogloszenia-section">
-        <div class="container">
-            <h2 class="section-heading"><?php esc_html_e( 'Ogłoszenia parafialne', 'parafia-mrozy' ); ?></h2>
-
-            <?php
-            $ogloszenia = new WP_Query( [
-                'post_type'      => 'ogloszenia',
-                'posts_per_page' => 3,
-            ] );
-            ?>
-
-            <?php if ( $ogloszenia->have_posts() ) : ?>
-            <div class="posts-grid">
-                <?php while ( $ogloszenia->have_posts() ) : $ogloszenia->the_post();
-                    get_template_part( 'template-parts/card', 'post' );
-                endwhile; wp_reset_postdata(); ?>
-            </div>
-            <?php else : ?>
-                <p><?php esc_html_e( 'Brak ogłoszeń.', 'parafia-mrozy' ); ?></p>
-            <?php endif; ?>
-
-        </div>
-    </section>
-
-
-    <!-- =========================================
-         INTENCJE MSZY ŚW.
-         ========================================= -->
-    <section class="section-wrapper intencje-section">
-        <div class="container">
-            <h2 class="section-heading"><?php esc_html_e( 'Intencje Mszy św.', 'parafia-mrozy' ); ?></h2>
-
-            <?php
-            $intencje = new WP_Query( [
-                'post_type'      => 'intencje',
-                'posts_per_page' => 3,
-            ] );
-            ?>
-
-            <?php if ( $intencje->have_posts() ) : ?>
-            <div class="posts-grid">
-                <?php while ( $intencje->have_posts() ) : $intencje->the_post();
-                    get_template_part( 'template-parts/card', 'intencja' );
-                endwhile; wp_reset_postdata(); ?>
-            </div>
-            <?php else : ?>
-                <p><?php esc_html_e( 'Brak intencji.', 'parafia-mrozy' ); ?></p>
-            <?php endif; ?>
-
-        </div>
-    </section>
-
-
-    <!-- =========================================
-         GALERIA
-         ========================================= -->
     <section class="gallery-section">
         <div class="container">
             <h2 class="section-heading"><?php esc_html_e( 'Galeria', 'parafia-mrozy' ); ?></h2>
@@ -269,11 +248,6 @@ get_header();
     </section>
 
 
-
-
-    <!-- =========================================
-         KALENDARZ LITURGICZNY
-         ========================================= -->
     <?php
 
     function parafia_easter( $year ) {
@@ -491,9 +465,6 @@ get_header();
         </div>
     </section>
 
-    <!-- =========================================
-         INFO PANEL: Kancelaria + Porządek Mszy
-         ========================================= -->
     <section class="info-panel">
         <div class="container">
             <div class="info-panel-grid">
@@ -554,9 +525,6 @@ get_header();
     </section>
 
 
-    <!-- =========================================
-         CYTAT ŚW. TERESY
-         ========================================= -->
     <section class="quote-section">
         <div class="container">
             <div class="quote-inner">
@@ -574,10 +542,6 @@ get_header();
 
 
 
-
-    <!-- =========================================
-         VATICAN NEWS (iframe embed)
-         ========================================= -->
     <section class="vatican-news-section">
         <div class="container">
             <h2 class="section-heading"><?php esc_html_e( 'Vatican News', 'parafia-mrozy' ); ?></h2>
@@ -605,7 +569,6 @@ get_header();
                 var lastWidth = 0;
                 var resizeTimer;
 
-                // Wysokość iframe ustawiamy wg komunikatu z widgetu — tylko z zaufanego origin.
                 window.addEventListener( 'message', function ( e ) {
                     if ( e.origin !== VN_ORIGIN ) { return; }
                     var d = e.data;
@@ -614,10 +577,6 @@ get_header();
                     if ( h > 0 && h < 20000 ) { f.style.height = h + 'px'; }
                 } );
 
-                // Widget mierzy własną wysokość TYLKO raz, w chwili ładowania, i nie
-                // reaguje na późniejszą zmianę szerokości iframe. Dlatego ładujemy go
-                // dopiero gdy iframe ma już docelową szerokość (inaczej zostaje zawyżona
-                // wysokość z węższego layoutu = biała przestrzeń na desktopie).
                 function loadWidget() {
                     lastWidth = f.clientWidth;
                     f.style.height = '600px';
@@ -627,8 +586,6 @@ get_header();
                 if ( document.readyState === 'complete' ) { loadWidget(); }
                 else { window.addEventListener( 'load', loadWidget ); }
 
-                // Przy realnej zmianie szerokości (zmienia się liczba kolumn) —
-                // przeładuj, by widget zmierzył wysokość dla nowego układu.
                 window.addEventListener( 'resize', function () {
                     if ( Math.abs( f.clientWidth - lastWidth ) < 20 ) { return; }
                     clearTimeout( resizeTimer );

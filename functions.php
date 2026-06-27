@@ -2,7 +2,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'PARAFIA_MROZY_VERSION', '1.0.0' );
+define( 'PARAFIA_MROZY_VERSION', '1.1.0' );
 
 function parafia_mrozy_setup() {
     load_theme_textdomain( 'parafia-mrozy', get_template_directory() . '/languages' );
@@ -35,14 +35,7 @@ function parafia_mrozy_setup() {
 }
 add_action( 'after_setup_theme', 'parafia_mrozy_setup' );
 
-/**
- * Lista niestandardowych szablonów stron motywu.
- * Plik szablonu => czytelna nazwa pokazywana w edytorze strony (pole „Szablon").
- *
- * Dzięki temu szablony są wybieralne z listy, mimo że pliki nie zawierają
- * klasycznego nagłówka „Template Name”. To z kolei warunkuje pojawianie się
- * powiązanych metaboxów (np. „Sakramenty — treści”, „Kapłani”, „Kancelaria”).
- */
+
 function parafia_mrozy_page_templates_map() {
     return [
         'page-sakramenty.php'      => 'Sakramenty',
@@ -62,10 +55,7 @@ function parafia_mrozy_page_templates_map() {
     ];
 }
 
-/**
- * Rejestruje powyższe szablony, aby były dostępne w edytorze strony.
- * Pomija pliki, których fizycznie nie ma w motywie (bezpieczeństwo).
- */
+
 function parafia_mrozy_register_page_templates( $templates ) {
     foreach ( parafia_mrozy_page_templates_map() as $plik => $nazwa ) {
         if ( file_exists( get_theme_file_path( $plik ) ) ) {
@@ -76,11 +66,7 @@ function parafia_mrozy_register_page_templates( $templates ) {
 }
 add_filter( 'theme_page_templates', 'parafia_mrozy_register_page_templates' );
 
-/**
- * Zapewnia poprawne renderowanie, gdy szablon nie został wybrany ręcznie,
- * ale slug strony odpowiada plikowi page-{slug}.php (konwencja WordPressa).
- * Nie nadpisuje ręcznie wybranego szablonu ani istniejącego front-page/galerii.
- */
+
 function parafia_mrozy_template_by_slug( $template ) {
     if ( ! is_page() ) {
         return $template;
@@ -105,11 +91,7 @@ function parafia_mrozy_template_by_slug( $template ) {
 }
 add_filter( 'template_include', 'parafia_mrozy_template_by_slug', 20 );
 
-/**
- * Sprawdza, czy dana strona korzysta z konkretnego szablonu — niezależnie od tego,
- * czy został on wybrany ręcznie (meta _wp_page_template), czy wynika z konwencji
- * page-{slug}.php. Używane przez metaboxy, by pokazywały się we właściwym kontekście.
- */
+
 function parafia_mrozy_strona_ma_szablon( $post, $plik_szablonu ) {
     if ( ! $post instanceof WP_Post ) {
         $post = get_post( $post );
