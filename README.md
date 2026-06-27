@@ -106,5 +106,3 @@ Po instalacji utwórz następujące kategorie wpisów:
 
 - WordPress 6.0+
 - PHP 7.4+
-# Parafia Mrozy Theme
-# Parafia Mrozy Wordpress Theme
