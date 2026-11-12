@@ -42,6 +42,7 @@ function parafia_mrozy_pola_ustawien() {
 
         // Strona główna — sekcje
         'pm_sekcja_slider'       => [ 'Slider (zdjęcia na górze)', 'wlacz', '1', 'sekcje', '' ],
+        'pm_sekcja_adwent'       => [ 'Adwent – „Droga do Betlejem”', 'adwent', '1', 'sekcje', 'Pokazuje się sama tylko od I niedzieli Adwentu do terminu ustawionego w menu Adwent. Treści, termin i tryb testowy: menu Adwent.' ],
         'pm_sekcja_aktualnosci'  => [ 'Aktualności parafialne', 'wlacz', '1', 'sekcje', '' ],
         'pm_sekcja_ogloszenia'   => [ 'Ogłoszenia parafialne', 'wlacz', '1', 'sekcje', '' ],
         'pm_sekcja_intencje'     => [ 'Intencje Mszy św.', 'wlacz', '1', 'sekcje', '' ],
@@ -81,7 +82,7 @@ function parafia_mrozy_sekcje_ustawien() {
         'konto'      => [ 'Konto parafii', '' ],
         'msze'       => [ 'Msze Święte i nabożeństwa', 'Panel „Porządek Mszy Św.” na stronie głównej.' ],
         'kancelaria' => [ 'Kancelaria – godziny', '' ],
-        'sekcje'     => [ 'Strona główna – widoczne sekcje', 'Odznacz sekcję, aby ukryć ją na stronie głównej. Sekcja „Adwent” ma osobne ustawienia w menu Adwent.' ],
+        'sekcje'     => [ 'Strona główna – widoczne sekcje', 'Odznacz sekcję, aby ukryć ją na stronie głównej.' ],
         'liczby'     => [ 'Strona główna – ile elementów pokazać', '' ],
         'rocznica'   => [ 'Licznik do rocznicy', '' ],
         'cytat'      => [ 'Cytat na stronie głównej', '' ],
@@ -91,6 +92,10 @@ function parafia_mrozy_sekcje_ustawien() {
 
 /** Wartość ustawienia (bez escapowania) z domyślną z rejestru pól. */
 function pm_opcja( $klucz ) {
+    if ( 'pm_sekcja_adwent' === $klucz ) {
+        $adwent = function_exists( 'parafia_adwent_ustawienia' ) ? parafia_adwent_ustawienia() : [];
+        return empty( $adwent['wlaczony'] ) ? '0' : '1';
+    }
     $pola     = parafia_mrozy_pola_ustawien();
     $domyslna = isset( $pola[ $klucz ] ) ? $pola[ $klucz ][2] : '';
     $wartosc  = get_theme_mod( $klucz, null );
@@ -148,6 +153,7 @@ function parafia_mrozy_oczysc_pole( $pole, $wartosc ) {
         case 'date':
             return preg_match( '/^\d{4}-\d{2}-\d{2}$/', $wartosc ) ? $wartosc : $pole[2];
         case 'wlacz':
+        case 'adwent':
             return '1' === $wartosc ? '1' : '0';
         default:
             return sanitize_text_field( $wartosc );
@@ -217,9 +223,12 @@ function parafia_mrozy_strona_ustawien() {
                         <tr>
                             <th scope="row"><label for="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $pole[0] ); ?></label></th>
                             <td>
-                                <?php if ( 'wlacz' === $pole[1] ) : ?>
+                                <?php if ( 'wlacz' === $pole[1] || 'adwent' === $pole[1] ) : ?>
                                     <input type="hidden" name="<?php echo esc_attr( $nazwa ); ?>" value="0">
                                     <label><input type="checkbox" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $nazwa ); ?>" value="1" <?php checked( '1', $wartosc ); ?>> Pokazuj</label>
+                                    <?php if ( 'adwent' === $pole[1] && defined( 'PARAFIA_ADWENT_MENU' ) ) : ?>
+                                        &nbsp;<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . PARAFIA_ADWENT_MENU ) ); ?>">Ustawienia Adwentu →</a>
+                                    <?php endif; ?>
                                 <?php elseif ( 'textarea' === $pole[1] || 'tekst_html' === $pole[1] ) : ?>
                                     <textarea id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $nazwa ); ?>" rows="<?php echo 'tekst_html' === $pole[1] ? 6 : 5; ?>" class="large-text"><?php echo esc_textarea( $wartosc ); ?></textarea>
                                 <?php elseif ( 'number' === $pole[1] ) : ?>
@@ -252,7 +261,18 @@ function parafia_mrozy_zapisz_ustawienia() {
         if ( ! array_key_exists( $klucz, $wejscie ) ) {
             continue;
         }
-        set_theme_mod( $klucz, parafia_mrozy_oczysc_pole( $pole, $wejscie[ $klucz ] ) );
+        $wartosc = parafia_mrozy_oczysc_pole( $pole, $wejscie[ $klucz ] );
+        if ( 'adwent' === $pole[1] ) {
+            // Ten sam przełącznik co w menu Adwent („Pokazuj widżet na stronie głównej”).
+            if ( defined( 'PARAFIA_ADWENT_OPCJA' ) ) {
+                $adwent = get_option( PARAFIA_ADWENT_OPCJA );
+                $adwent = is_array( $adwent ) ? $adwent : ( function_exists( 'parafia_adwent_ustawienia' ) ? parafia_adwent_ustawienia() : [] );
+                $adwent['wlaczony'] = (int) $wartosc;
+                update_option( PARAFIA_ADWENT_OPCJA, $adwent, false );
+            }
+            continue;
+        }
+        set_theme_mod( $klucz, $wartosc );
     }
 
     wp_safe_redirect( admin_url( 'admin.php?page=' . PARAFIA_MROZY_USTAWIENIA_STRONA . '&zapisano=1' ) );
