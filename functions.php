@@ -2,7 +2,10 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'PARAFIA_MROZY_VERSION', '1.1.0' );
+define( 'PARAFIA_MROZY_VERSION', '1.2.0' );
+
+require_once get_template_directory() . '/inc/webp.php';
+require_once get_template_directory() . '/inc/galeria.php';
 
 function parafia_mrozy_setup() {
     load_theme_textdomain( 'parafia-mrozy', get_template_directory() . '/languages' );
@@ -578,77 +581,7 @@ add_action( 'save_post', 'parafia_mrozy_lso_gallery_save' );
 
 
 
-define( 'PARAFIA_IMG_QUALITY', 82 );
-define( 'PARAFIA_IMG_MAX_WIDTH', 1920 );
-
-function parafia_mrozy_compress_and_webp( $metadata, $attachment_id ) {
-    $file = get_attached_file( $attachment_id );
-    if ( ! $file ) return $metadata;
-
-    $mime = mime_content_type( $file );
-    $allowed = [ 'image/jpeg', 'image/jpg', 'image/png', 'image/webp' ];
-    if ( ! in_array( $mime, $allowed ) ) return $metadata;
-
-    $editor = wp_get_image_editor( $file );
-    if ( is_wp_error( $editor ) ) return $metadata;
-
-    $size = $editor->get_size();
-    if ( $size['width'] > PARAFIA_IMG_MAX_WIDTH ) {
-        $editor->resize( PARAFIA_IMG_MAX_WIDTH, null, false );
-    }
-
-    $editor->set_quality( PARAFIA_IMG_QUALITY );
-    $editor->save( $file );
-
-    if ( function_exists( 'imagewebp' ) || ( class_exists( 'Imagick' ) && in_array( 'WEBP', Imagick::queryFormats() ) ) ) {
-        $webp_file = preg_replace( '/\.(jpe?g|png)$/i', '.webp', $file );
-        if ( $webp_file !== $file ) {
-            $editor2 = wp_get_image_editor( $file );
-            if ( ! is_wp_error( $editor2 ) ) {
-                $editor2->set_quality( PARAFIA_IMG_QUALITY );
-                $result = $editor2->save( $webp_file, 'image/webp' );
-                if ( ! is_wp_error( $result ) ) {
-                    update_post_meta( $attachment_id, '_webp_file', $webp_file );
-                    update_post_meta( $attachment_id, '_webp_url',
-                        str_replace(
-                            wp_upload_dir()['basedir'],
-                            wp_upload_dir()['baseurl'],
-                            $webp_file
-                        )
-                    );
-                }
-            }
-        }
-    }
-
-    return $metadata;
-}
-add_filter( 'wp_generate_attachment_metadata', 'parafia_mrozy_compress_and_webp', 20, 2 );
-
-function parafia_mrozy_serve_webp( $sources, $size_array, $image_src, $image_meta, $attachment_id ) {
-    if ( empty( $_SERVER['HTTP_ACCEPT'] ) ) return $sources;
-    if ( strpos( $_SERVER['HTTP_ACCEPT'], 'image/webp' ) === false ) return $sources;
-
-    $webp_url = get_post_meta( $attachment_id, '_webp_url', true );
-    if ( ! $webp_url ) return $sources;
-
-    foreach ( $sources as $width => $source ) {
-        $webp_variant = preg_replace( '/\.(jpe?g|png)$/i', '.webp',
-            preg_replace( '/-\d+x\d+(\.(jpe?g|png))$/i', '$1', $source['url'] )
-        );
-        $webp_path = str_replace(
-            wp_upload_dir()['baseurl'],
-            wp_upload_dir()['basedir'],
-            $webp_variant
-        );
-        if ( file_exists( $webp_path ) ) {
-            $sources[ $width ]['url'] = $webp_variant;
-        }
-    }
-
-    return $sources;
-}
-add_filter( 'wp_calculate_image_srcset', 'parafia_mrozy_serve_webp', 10, 5 );
+// Konwersja zdjęć do WebP przy wgrywaniu: inc/webp.php
 
 
 function parafia_pg_meta_boxes() {

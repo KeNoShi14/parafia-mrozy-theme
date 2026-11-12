@@ -16,10 +16,17 @@ get_header();
                 <?php the_title(); ?>
             </p>
             <h1 class="gallery-single-title"><?php the_title(); ?></h1>
+            <?php
+            $zdjecia_ids = parafia_mrozy_galeria_zdjecia( get_the_ID() );
+            $opis        = (string) get_post_field( 'post_excerpt', get_the_ID() );
+            ?>
             <p class="gallery-single-meta">
-                <?php echo get_the_date( 'd F Y' ); ?>
-                <?php if ( has_excerpt() ) : ?>
-                    <span class="gallery-single-desc"><?php the_excerpt(); ?></span>
+                <?php echo esc_html( parafia_mrozy_galeria_data_tekst( parafia_mrozy_galeria_data( get_the_ID() ) ) ); ?>
+                <?php if ( $zdjecia_ids ) : ?>
+                    · <?php echo esc_html( parafia_mrozy_galeria_liczba( count( $zdjecia_ids ) ) ); ?>
+                <?php endif; ?>
+                <?php if ( '' !== trim( $opis ) ) : ?>
+                    <span class="gallery-single-desc"><?php echo nl2br( esc_html( trim( $opis ) ) ); ?></span>
                 <?php endif; ?>
             </p>
         </div>
@@ -31,14 +38,10 @@ get_header();
 
             <?php
             $images = [];
-            $content = get_the_content();
-            preg_match_all( '/wp-image-(\d+)/', $content, $matches );
-            if ( ! empty( $matches[1] ) ) {
-                foreach ( array_unique( $matches[1] ) as $img_id ) {
-                    $img = get_post( intval( $img_id ) );
-                    if ( $img && $img->post_type === 'attachment' ) {
-                        $images[ $img_id ] = $img;
-                    }
+            foreach ( $zdjecia_ids as $img_id ) {
+                $img = get_post( $img_id );
+                if ( $img && 'attachment' === $img->post_type ) {
+                    $images[ $img_id ] = $img;
                 }
             }
             ?>
@@ -51,17 +54,20 @@ get_header();
                     foreach ( $images as $image ) :
                         $full_url  = wp_get_attachment_image_url( $image->ID, 'full' );
                         $thumb_url = wp_get_attachment_image_url( $image->ID, 'large' );
-                        $alt       = get_post_meta( $image->ID, '_wp_attachment_image_alt', true );
-                        $caption   = $image->post_excerpt ?: $image->post_title;
+                        $alt       = trim( (string) get_post_meta( $image->ID, '_wp_attachment_image_alt', true ) );
+                        $caption   = trim( $image->post_excerpt );
+                        if ( '' === $alt ) {
+                            $alt = '' !== $caption ? $caption : sprintf( '%s – zdjęcie %d', get_the_title(), $index + 1 );
+                        }
                     ?>
                     <a href="<?php echo esc_url( $full_url ); ?>"
                        class="pm-lightbox-item"
                        data-index="<?php echo $index; ?>"
                        data-caption="<?php echo esc_attr( $caption ); ?>"
-                       aria-label="<?php echo esc_attr( $alt ?: $caption ); ?>">
+                       aria-label="<?php echo esc_attr( $alt ); ?>">
                         <img src="<?php echo esc_url( $thumb_url ); ?>"
-                             alt="<?php echo esc_attr( $alt ?: $caption ); ?>"
-                             loading="lazy">
+                             alt="<?php echo esc_attr( $alt ); ?>"
+                             loading="<?php echo $index < 8 ? 'eager' : 'lazy'; ?>">
                         <div class="pm-lightbox-overlay">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
                         </div>
@@ -73,9 +79,9 @@ get_header();
                 <p class="gallery-empty">Brak zdjęć w tej galerii.</p>
             <?php endif; ?>
 
-            <!-- Opis tekstowy (tylko paragraf, bez bloków galerii) -->
+            <!-- Opis ze starszych galerii (tekst w treści wpisu, bez bloków zdjęć) -->
             <?php
-            $blocks = parse_blocks( get_the_content() );
+            $blocks = ( '' === trim( $opis ) && ! parafia_mrozy_galeria_nowy_format( get_the_ID() ) ) ? parse_blocks( get_the_content() ) : [];
             $text_blocks = array_filter( $blocks, function( $block ) {
                 return ! in_array( $block['blockName'], [
                     'core/gallery', 'core/image', 'core/media-text',
@@ -98,20 +104,20 @@ get_header();
         <!-- Nawigacja -->
         <div class="gallery-nav">
             <?php
-            $prev = get_previous_post( true, '', 'category' );
-            $next = get_next_post( true, '', 'category' );
+            $prev = parafia_mrozy_galeria_sasiad( get_the_ID(), 'starsze' );
+            $next = parafia_mrozy_galeria_sasiad( get_the_ID(), 'nowsze' );
             ?>
             <?php if ( $prev ) : ?>
-                <a href="<?php echo get_permalink( $prev ); ?>" class="gallery-nav-btn">
-                    ← <?php echo get_the_title( $prev ); ?>
+                <a href="<?php echo esc_url( get_permalink( $prev ) ); ?>" class="gallery-nav-btn">
+                    ← <?php echo esc_html( get_the_title( $prev ) ); ?>
                 </a>
             <?php endif; ?>
             <a href="<?php echo esc_url( home_url( '/galerie/' ) ); ?>" class="gallery-nav-btn gallery-nav-all">
                 Wszystkie galerie
             </a>
             <?php if ( $next ) : ?>
-                <a href="<?php echo get_permalink( $next ); ?>" class="gallery-nav-btn">
-                    <?php echo get_the_title( $next ); ?> →
+                <a href="<?php echo esc_url( get_permalink( $next ) ); ?>" class="gallery-nav-btn">
+                    <?php echo esc_html( get_the_title( $next ) ); ?> →
                 </a>
             <?php endif; ?>
         </div>

@@ -53,6 +53,17 @@ Strona główna składa się z następujących sekcji (w kolejności od góry):
 - Administracja → **Intencje Mszy Św.** → Dodaj nowe
 - Aby dodać przycisk PDF: dodaj meta pole `_pdf_url` z URL do pliku PDF
 
+### Galerie zdjęć
+- Administracja → **Galerie** → **Dodaj galerię**
+- Wpisz nazwę wydarzenia, przeciągnij zdjęcia z komputera (albo wybierz je z biblioteki mediów), ustaw kolejność przeciągając miniatury, gwiazdką wybierz okładkę, uzupełnij datę wydarzenia i krótki opis → **Opublikuj**
+- Galerie to wpisy w kategorii `galeria` — kategoria jest ustawiana automatycznie
+- Galerie są sortowane wg **daty wydarzenia** (strona „Galerie”, filtr lat, strona główna, nawigacja „poprzednia / następna”)
+- Starsze galerie (zdjęcia wstawione blokiem w treści wpisu) wyświetlają się jak dotąd; po otwarciu w kokpicie zdjęcia pojawią się w nowym panelu i po zapisaniu przejdą na nowy format
+
+### Zdjęcia → WebP
+- Każde wgrywane zdjęcie JPG / PNG / HEIC jest od razu zamieniane na WebP (jakość 82, najdłuższy bok maks. 1920 px, obrót wg EXIF) — w bibliotece mediów zostaje tylko plik `.webp`
+- Ustawienia: stałe `PARAFIA_IMG_QUALITY` i `PARAFIA_IMG_MAX_WIDTH` w `inc/webp.php`; konwersję można wyłączyć filtrem `parafia_mrozy_webp_wlaczone`
+
 ### Vatican News
 - Administracja → **Vatican News** → Dodaj nowe
 

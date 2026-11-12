@@ -1,0 +1,136 @@
+.parafia-gk__strefa {
+	position: relative;
+	padding: 28px 20px 22px;
+	border: 2px dashed #c3c4c7;
+	border-radius: 6px;
+	background: #f6f7f7;
+	text-align: center;
+}
+.parafia-gk__strefa.is-nad,
+.parafia-gk__strefa.drag-over {
+	border-color: #a8862e;
+	background: #fbf6e9;
+}
+.parafia-gk__strefa-tekst {
+	margin: 0 0 12px;
+	font-size: 15px;
+	line-height: 1.6;
+}
+.parafia-gk__przyciski {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	margin: 0 0 10px;
+}
+.parafia-gk__postep {
+	margin-top: 12px;
+	font-weight: 600;
+	color: #a8862e;
+}
+.parafia-gk__pasek {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 16px;
+	align-items: baseline;
+	margin: 16px 0 10px;
+}
+.parafia-gk__licznik {
+	font-weight: 600;
+	font-size: 14px;
+}
+.parafia-gk__lista {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+	gap: 10px;
+	margin: 0;
+}
+.parafia-gk__zdjecie,
+.parafia-gk__miejsce {
+	position: relative;
+	margin: 0;
+	aspect-ratio: 1;
+	border-radius: 4px;
+	overflow: hidden;
+	background: #dcdcde;
+	cursor: move;
+}
+.parafia-gk__miejsce {
+	background: #fbf6e9;
+	border: 2px dashed #a8862e;
+	box-sizing: border-box;
+}
+.parafia-gk__zdjecie img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.parafia-gk__zdjecie.is-wgrywane img {
+	opacity: 0;
+}
+.parafia-gk__zdjecie.is-wgrywane::after {
+	content: "Wgrywanie…";
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	font-size: 12px;
+	color: #50575e;
+}
+.parafia-gk__zdjecie button {
+	position: absolute;
+	top: 6px;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.6);
+	color: #fff;
+	font-size: 16px;
+	line-height: 28px;
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity 0.15s;
+}
+.parafia-gk__zdjecie:hover button,
+.parafia-gk__zdjecie:focus-within button,
+.parafia-gk__zdjecie.is-okladka .parafia-gk__okladka {
+	opacity: 1;
+}
+.parafia-gk__okladka {
+	left: 6px;
+}
+.parafia-gk__usun {
+	right: 6px;
+}
+.parafia-gk__usun:hover {
+	background: #b32d2e;
+}
+.parafia-gk__zdjecie.is-okladka .parafia-gk__okladka {
+	background: #c9a84c;
+}
+.parafia-gk__znacznik {
+	display: none;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 3px 0;
+	background: rgba(201, 168, 76, 0.95);
+	color: #fff;
+	font-size: 11px;
+	font-weight: 600;
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+.parafia-gk__zdjecie.is-okladka .parafia-gk__znacznik {
+	display: block;
+}
+@media (hover: none) {
+	.parafia-gk__zdjecie button {
+		opacity: 1;
+	}
+}

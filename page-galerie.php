@@ -9,32 +9,15 @@ $per_page = isset($_GET['na_stronie']) && in_array((int)$_GET['na_stronie'], $pe
     ? (int)$_GET['na_stronie']
     : 12;
 
-$all_galerie = new WP_Query([
-    'post_type'      => 'post',
-    'category_name'  => 'galeria',
-    'posts_per_page' => -1,
-    'fields'         => 'ids',
-]);
-$years = [];
-foreach ($all_galerie->posts as $id) {
-    $years[] = (int) get_the_date('Y', $id);
+$years = parafia_mrozy_galeria_lata();
+if ( $current_year && ! in_array( $current_year, $years, true ) ) {
+    $current_year = 0;
 }
-$years = array_unique($years);
-rsort($years);
-wp_reset_postdata();
 
-$args = [
-    'post_type'      => 'post',
-    'category_name'  => 'galeria',
+$galerie = new WP_Query( parafia_mrozy_galeria_args( [
     'posts_per_page' => $per_page,
     'paged'          => $paged,
-];
-if ($current_year) {
-    $args['date_query'] = [[
-        'year' => $current_year,
-    ]];
-}
-$galerie = new WP_Query($args);
+], $current_year ) );
 ?>
 
 <main id="primary" class="site-main" role="main">
@@ -95,8 +78,9 @@ $galerie = new WP_Query($args);
             <?php while ($galerie->have_posts()) : $galerie->the_post(); ?>
             <a href="<?php the_permalink(); ?>" class="galerie-card">
                 <div class="galerie-card__thumb">
-                    <?php if (has_post_thumbnail()) : ?>
-                        <?php the_post_thumbnail('large', ['alt' => get_the_title(), 'loading' => 'lazy']); ?>
+                    <?php $okladka = parafia_mrozy_galeria_okladka( get_the_ID() ); ?>
+                    <?php if ( $okladka ) : ?>
+                        <?php echo wp_get_attachment_image( $okladka, 'large', false, [ 'alt' => get_the_title(), 'loading' => 'lazy' ] ); ?>
                     <?php else : ?>
                         <div class="galerie-card__placeholder">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -111,22 +95,15 @@ $galerie = new WP_Query($args);
                     <h3 class="galerie-card__title"><?php the_title(); ?></h3>
                     <p class="galerie-card__date">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                        <?php echo get_the_date('j F Y'); ?>
+                        <?php echo esc_html( parafia_mrozy_galeria_data_tekst( parafia_mrozy_galeria_data( get_the_ID() ) ) ); ?>
                     </p>
                     <?php
-                    $photos = get_children([
-                        'post_parent'    => get_the_ID(),
-                        'post_type'      => 'attachment',
-                        'post_mime_type' => 'image',
-                        'numberposts'    => -1,
-                        'fields'         => 'ids',
-                    ]);
-                    $count = count($photos);
+                    $count = count( parafia_mrozy_galeria_zdjecia( get_the_ID() ) );
                     if ($count > 0) :
                     ?>
                     <p class="galerie-card__count">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        <?php echo $count; ?> <?php echo $count === 1 ? 'zdjęcie' : ($count < 5 ? 'zdjęcia' : 'zdjęć'); ?>
+                        <?php echo esc_html( parafia_mrozy_galeria_liczba( $count ) ); ?>
                     </p>
                     <?php endif; ?>
                 </div>
