@@ -201,19 +201,18 @@ get_header();
             <h2 class="section-heading"><?php esc_html_e( 'Galeria', 'parafia-mrozy' ); ?></h2>
 
             <?php
-            $gallery_posts = new WP_Query( [
-                'post_type'      => 'post',
+            $gallery_posts = new WP_Query( parafia_mrozy_galeria_args( [
                 'posts_per_page' => 3,
-                'category_name'  => 'galeria',
-            ] );
+            ] ) );
             ?>
 
             <?php if ( $gallery_posts->have_posts() ) : ?>
             <div class="gallery-grid">
                 <?php while ( $gallery_posts->have_posts() ) : $gallery_posts->the_post(); ?>
                 <a href="<?php the_permalink(); ?>" class="gallery-item">
-                    <?php if ( has_post_thumbnail() ) : ?>
-                        <?php the_post_thumbnail( 'gallery-thumb', [ 'alt' => get_the_title() ] ); ?>
+                    <?php $okladka = parafia_mrozy_galeria_okladka( get_the_ID() ); ?>
+                    <?php if ( $okladka ) : ?>
+                        <?php echo wp_get_attachment_image( $okladka, 'gallery-thumb', false, [ 'alt' => get_the_title() ] ); ?>
                     <?php else : ?>
                         <img src="<?php echo get_template_directory_uri(); ?>/img/gallery-placeholder.jpg" alt="<?php the_title_attribute(); ?>">
                     <?php endif; ?>
@@ -223,14 +222,7 @@ get_header();
             </div>
 
             <?php
-            $all_galleries = new WP_Query([
-                'post_type'      => 'post',
-                'category_name'  => 'galeria',
-                'posts_per_page' => -1,
-                'fields'         => 'ids',
-            ]);
-            $total = $all_galleries->found_posts;
-            wp_reset_postdata();
+            $total = (int) $gallery_posts->found_posts;
 
             if ( $total > 3 ) :
                 $galeria_url = home_url('/galerie/');
