@@ -2,10 +2,12 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'PARAFIA_MROZY_VERSION', '1.3.0' );
+define( 'PARAFIA_MROZY_VERSION', '1.4.0' );
 
 require_once get_template_directory() . '/inc/webp.php';
 require_once get_template_directory() . '/inc/galeria.php';
+require_once get_template_directory() . '/inc/ustawienia.php';
+require_once get_template_directory() . '/inc/uprawnienia.php';
 require_once get_template_directory() . '/inc/adwent.php';
 
 function parafia_mrozy_setup() {
@@ -161,6 +163,8 @@ function parafia_mrozy_register_cpt() {
         'has_archive'        => true,
         'show_in_rest'       => true,
         'menu_icon'          => 'dashicons-megaphone',
+        'capability_type'    => [ 'ogloszenie', 'ogloszenia' ],
+        'map_meta_cap'       => true,
         'supports'           => [ 'title', 'editor', 'thumbnail', 'excerpt' ],
         'rewrite'            => [ 'slug' => 'ogloszenia' ],
     ] );
@@ -179,6 +183,8 @@ function parafia_mrozy_register_cpt() {
         'has_archive'        => true,
         'show_in_rest'       => true,
         'menu_icon'          => 'dashicons-book-alt',
+        'capability_type'    => [ 'intencja', 'intencje_mszalne' ],
+        'map_meta_cap'       => true,
         'supports'           => [ 'title', 'editor', 'thumbnail' ],
         'rewrite'            => [ 'slug' => 'intencje' ],
     ] );
@@ -226,62 +232,13 @@ function parafia_mrozy_widgets_init() {
 }
 add_action( 'widgets_init', 'parafia_mrozy_widgets_init' );
 
-function parafia_mrozy_customize_register( $wp_customize ) {
-
-    $wp_customize->add_section( 'parafia_info', [
-        'title'    => __( 'Dane parafii', 'parafia-mrozy' ),
-        'priority' => 30,
-    ] );
-
-    $fields = [
-        'parafia_address'  => [ 'label' => 'Adres', 'default' => 'ul. Św. Teresy 3, 05-320 Mrozy' ],
-        'parafia_phone'    => [ 'label' => 'Telefon', 'default' => '25 757 41 93' ],
-        'parafia_email'    => [ 'label' => 'E-mail', 'default' => 'parafiamrozy@gmail.com' ],
-        'parafia_konto'    => [ 'label' => 'Nr konta', 'default' => '58 9227 0004 0000 0808 2000 0010' ],
-        'parafia_bank'     => [ 'label' => 'Bank', 'default' => 'Bank Spółdzielczy w Mrozach' ],
-        'parafia_map_url'  => [ 'label' => 'URL mapy (iframe src)', 'default' => 'https://maps.google.com/maps?q=Parafia+Mrozy&output=embed' ],
-    ];
-
-    foreach ( $fields as $key => $args ) {
-        $wp_customize->add_setting( $key, [
-            'default'           => $args['default'],
-            'sanitize_callback' => 'sanitize_text_field',
-        ] );
-        $wp_customize->add_control( $key, [
-            'label'   => $args['label'],
-            'section' => 'parafia_info',
-            'type'    => 'text',
-        ] );
-    }
-
-    $wp_customize->add_section( 'parafia_msze', [
-        'title'    => __( 'Porządek Mszy Św.', 'parafia-mrozy' ),
-        'priority' => 31,
-    ] );
-
-    $msze_fields = [
-        'msze_powszednie'  => [ 'label' => 'Dni powszednie', 'default' => '07:00 i 18:00' ],
-        'msze_niedziela'   => [ 'label' => 'Niedziela', 'default' => '07:00, 08:30, 10:00, 12:00 i 18:00' ],
-        'spowiedz'         => [ 'label' => 'Spowiedź', 'default' => 'Przed każdą Mszą Świętą oraz w Pierwszy Piątek Miesiąca' ],
-        'rozaniec'         => [ 'label' => 'Różaniec', 'default' => 'Niedziela: 17:30' ],
-        'kancelaria_info'  => [ 'label' => 'Godziny kancelarii', 'default' => 'Pon, Śr, Pt: 8:30–9:30 (z wyjątkiem I Piątku)' ],
-    ];
-
-    foreach ( $msze_fields as $key => $args ) {
-        $wp_customize->add_setting( $key, [
-            'default'           => $args['default'],
-            'sanitize_callback' => 'sanitize_text_field',
-        ] );
-        $wp_customize->add_control( $key, [
-            'label'   => $args['label'],
-            'section' => 'parafia_msze',
-            'type'    => 'text',
-        ] );
-    }
-}
-add_action( 'customize_register', 'parafia_mrozy_customize_register' );
+// Dane parafii i porządek Mszy: panel Parafia → Ustawienia strony (inc/ustawienia.php).
 
 function pm_get( $key, $fallback = '' ) {
+    $pola = function_exists( 'parafia_mrozy_pola_ustawien' ) ? parafia_mrozy_pola_ustawien() : [];
+    if ( isset( $pola[ $key ] ) ) {
+        return esc_html( pm_opcja( $key ) );
+    }
     return esc_html( get_theme_mod( $key, $fallback ) );
 }
 

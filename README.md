@@ -55,6 +55,22 @@ Na stronie głównej, pod sliderem, w czasie Adwentu pojawia się sekcja z wędr
 
 ---
 
+## Panel „Parafia” (kokpit)
+
+### Zakładka „Ustawienia strony”
+Administracja → **Parafia → Ustawienia strony**. Jedno miejsce na najważniejsze elementy strony:
+- dane parafii (nazwa, adres, telefon, e-mail, mapa dojazdu), bank, numer konta i tytuł przelewu
+- porządek Mszy, spowiedź, różaniec oraz godziny kancelarii i ważna informacja (np. „W Pierwszy Piątek Miesiąca – kancelaria nieczynna!”)
+- strona główna: włączanie/wyłączanie sekcji (slider, aktualności, ogłoszenia, intencje, licznik rocznicy, galeria, kalendarz liturgiczny, kancelaria i Msze, cytat, Vatican News) i liczba pokazywanych elementów
+- licznik rocznicy (data, napisy), cytat, stopka (nazwa pod logo, „Przydatne strony”, podpis)
+
+Dawne sekcje Customizera „Dane parafii” i „Porządek Mszy Św.” zostały przeniesione tutaj — zapisane wartości zostają (te same klucze `theme_mod`).
+
+### Zakładka „Uprawnienia”
+Administracja → **Parafia → Uprawnienia** (tylko administrator). Tabela ról × sekcji: Aktualności, Galerie, Ogłoszenia, Intencje, Strony oraz dostęp do ustawień strony. Poziomy: brak dostępu / pisze – publikuje ktoś inny / publikuje własne / pełny dostęp. Dochodzą role **Proboszcz**, **Kancelaria parafialna** i **Media parafialne**; przypisuje się je w menu Użytkownicy. Na pulpicie kokpitu jest widżet „Parafia – szybkie dodawanie”.
+
+---
+
 ## Niestandardowe typy postów
 
 ### Aktualności (Posts + kategoria)
