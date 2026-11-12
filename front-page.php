@@ -5,9 +5,10 @@ get_header();
 <main id="primary" class="site-main" role="main">
 
     <?php
+    if ( pm_sekcja( 'slider' ) ) :
     $hero_posts = new WP_Query( [
         'post_type'      => 'post',
-        'posts_per_page' => 5,
+        'posts_per_page' => pm_liczba( 'slajdow' ),
         'meta_query'     => [
             [
                 'key'     => '_is_hero_slide',
@@ -62,6 +63,7 @@ get_header();
 
     </section>
     <?php endif; ?>
+    <?php endif; // pm_sekcja slider ?>
 
     <?php
     // Adwent: „Droga do Betlejem” — widoczne tylko w okresie ustawionym w panelu (menu „Adwent”).
@@ -70,6 +72,7 @@ get_header();
     }
     ?>
 
+    <?php if ( pm_sekcja( 'aktualnosci' ) ) : ?>
     <section class="section-wrapper aktualnosci-section">
         <div class="container">
             <h2 class="section-heading"><?php esc_html_e( 'Aktualności parafialne', 'parafia-mrozy' ); ?></h2>
@@ -77,7 +80,7 @@ get_header();
             <?php
             $aktualnosci = new WP_Query( [
                 'post_type'      => 'post',
-                'posts_per_page' => 6,
+                'posts_per_page' => pm_liczba( 'aktualnosci' ),
                 'category_name'  => 'aktualnosci',
             ] );
             ?>
@@ -100,8 +103,10 @@ get_header();
 
         </div>
     </section>
+    <?php endif; ?>
 
 
+    <?php if ( pm_sekcja( 'ogloszenia' ) ) : ?>
     <section class="section-wrapper ogloszenia-section">
         <div class="container">
             <h2 class="section-heading"><?php esc_html_e( 'Ogłoszenia parafialne', 'parafia-mrozy' ); ?></h2>
@@ -109,7 +114,7 @@ get_header();
             <?php
             $ogloszenia = new WP_Query( [
                 'post_type'      => 'ogloszenia',
-                'posts_per_page' => 3,
+                'posts_per_page' => pm_liczba( 'ogloszen' ),
             ] );
             ?>
 
@@ -125,8 +130,10 @@ get_header();
 
         </div>
     </section>
+    <?php endif; ?>
 
 
+    <?php if ( pm_sekcja( 'intencje' ) ) : ?>
     <section class="section-wrapper intencje-section">
         <div class="container">
             <h2 class="section-heading"><?php esc_html_e( 'Intencje Mszy św.', 'parafia-mrozy' ); ?></h2>
@@ -134,7 +141,7 @@ get_header();
             <?php
             $intencje = new WP_Query( [
                 'post_type'      => 'intencje',
-                'posts_per_page' => 3,
+                'posts_per_page' => pm_liczba( 'intencji' ),
             ] );
             ?>
 
@@ -150,12 +157,18 @@ get_header();
 
         </div>
     </section>
+    <?php endif; ?>
 
+    <?php
+    if ( pm_sekcja( 'rocznica' ) ) :
+        $rocznica_data = pm_opcja( 'pm_rocznica_data' );
+        $rocznica_cz   = array_map( 'intval', explode( '-', $rocznica_data ) );
+    ?>
     <section class="section-wrapper rocznica-section">
         <div class="container">
             <div class="rocznica-inner">
-                <p class="rocznica-label"><?php esc_html_e( 'Do 100. rocznicy erygowania parafii', 'parafia-mrozy' ); ?></p>
-                <h2 class="rocznica-title"><?php esc_html_e( '1 kwietnia 2031', 'parafia-mrozy' ); ?></h2>
+                <p class="rocznica-label"><?php echo esc_html( pm_opcja( 'pm_rocznica_etykieta' ) ); ?></p>
+                <h2 class="rocznica-title"><?php echo esc_html( pm_data_slownie( $rocznica_data ) ); ?></h2>
                 <div class="rocznica-grid">
                     <div class="rocznica-card"><span class="rocznica-number" id="rc-lata">–</span><span class="rocznica-unit"><?php esc_html_e( 'lat', 'parafia-mrozy' ); ?></span></div>
                     <div class="rocznica-card"><span class="rocznica-number" id="rc-miesiace">–</span><span class="rocznica-unit"><?php esc_html_e( 'miesięcy', 'parafia-mrozy' ); ?></span></div>
@@ -169,14 +182,16 @@ get_header();
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
                     <span></span>
                 </div>
-                <p class="rocznica-sub"><?php esc_html_e( 'Parafia pw. Św. Teresy od Dzieciątka Jezus w Mrozach · erygowana 1 kwietnia 1931', 'parafia-mrozy' ); ?></p>
+                <?php if ( '' !== pm_opcja( 'pm_rocznica_podpis' ) ) : ?>
+                <p class="rocznica-sub"><?php echo esc_html( pm_opcja( 'pm_rocznica_podpis' ) ); ?></p>
+                <?php endif; ?>
             </div>
         </div>
     </section>
 
     <script>
     (function () {
-        var cel = new Date(2031, 3, 1, 0, 0, 0);
+        var cel = new Date(<?php echo (int) $rocznica_cz[0]; ?>, <?php echo (int) $rocznica_cz[1] - 1; ?>, <?php echo (int) $rocznica_cz[2]; ?>, 0, 0, 0);
         function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
         function oblicz() {
@@ -202,14 +217,17 @@ get_header();
         setInterval(oblicz, 1000);
     })();
     </script>
+    <?php endif; // pm_sekcja rocznica ?>
 
+    <?php if ( pm_sekcja( 'galeria' ) ) : ?>
     <section class="gallery-section">
         <div class="container">
             <h2 class="section-heading"><?php esc_html_e( 'Galeria', 'parafia-mrozy' ); ?></h2>
 
             <?php
-            $gallery_posts = new WP_Query( parafia_mrozy_galeria_args( [
-                'posts_per_page' => 3,
+            $liczba_galerii = pm_liczba( 'galerii' );
+            $gallery_posts  = new WP_Query( parafia_mrozy_galeria_args( [
+                'posts_per_page' => $liczba_galerii,
             ] ) );
             ?>
 
@@ -231,7 +249,7 @@ get_header();
             <?php
             $total = (int) $gallery_posts->found_posts;
 
-            if ( $total > 3 ) :
+            if ( $total > $liczba_galerii ) :
                 $galeria_url = home_url('/galerie/');
             ?>
             <div class="read-more-wrap" style="margin-top:25px;">
@@ -245,6 +263,7 @@ get_header();
 
         </div>
     </section>
+    <?php endif; ?>
 
 
     <?php
@@ -411,6 +430,7 @@ get_header();
     $days_left = $season_end ? (int) ceil( ($season_end - $now) / 86400 ) : 0;
     ?>
 
+    <?php if ( pm_sekcja( 'kalendarz' ) ) : ?>
     <section class="liturgical-section" style="--liturgical-color: <?php echo esc_attr($cfg['color']); ?>; --liturgical-text: <?php echo esc_attr($cfg['text']); ?>;">
         <div class="container">
             <h2 class="section-heading"><?php esc_html_e( 'Kalendarz liturgiczny', 'parafia-mrozy' ); ?></h2>
@@ -463,7 +483,9 @@ get_header();
             </div>
         </div>
     </section>
+    <?php endif; ?>
 
+    <?php if ( pm_sekcja( 'info' ) ) : ?>
     <section class="info-panel">
         <div class="container">
             <div class="info-panel-grid">
@@ -473,21 +495,18 @@ get_header();
                     <h3><?php esc_html_e( 'Kancelaria parafialna', 'parafia-mrozy' ); ?></h3>
 
                     <h4><?php esc_html_e( 'Godziny otwarcia', 'parafia-mrozy' ); ?></h4>
-                    <p>
-                        <?php esc_html_e( 'Wtorek: 16:30 – 17:30', 'parafia-mrozy' ); ?><br>
-                        <?php esc_html_e( 'Środa: 16:30 – 17:30', 'parafia-mrozy' ); ?><br>
-                        <?php esc_html_e( 'Czwartek: 8:45 – 9:30', 'parafia-mrozy' ); ?><br>
-                        <?php esc_html_e( 'Piątek: 16:30 – 17:30', 'parafia-mrozy' ); ?><br>
-                        <?php esc_html_e( 'Sobota: 8:45 – 9:30', 'parafia-mrozy' ); ?>
-                    </p>
+                    <p><?php echo implode( '<br>', array_map( 'esc_html', pm_wiersze( 'pm_kancelaria_godziny' ) ) ); ?></p>
 
-                    <h4 style="color:#e57373;"><?php esc_html_e( 'W Pierwszy Piątek Miesiąca', 'parafia-mrozy' ); ?></h4>
-                    <p style="color:#e57373;"><?php esc_html_e( 'kancelaria nieczynna!', 'parafia-mrozy' ); ?></p>
+                    <?php if ( '' !== pm_opcja( 'pm_kancelaria_uwaga_t' ) ) : ?>
+                    <h4 style="color:#e57373;"><?php echo esc_html( pm_opcja( 'pm_kancelaria_uwaga_t' ) ); ?></h4>
+                    <?php endif; ?>
+                    <?php if ( '' !== pm_opcja( 'pm_kancelaria_uwaga' ) ) : ?>
+                    <p style="color:#e57373;"><?php echo esc_html( pm_opcja( 'pm_kancelaria_uwaga' ) ); ?></p>
+                    <?php endif; ?>
 
                     <h4><?php esc_html_e( 'Dane kontaktowe', 'parafia-mrozy' ); ?></h4>
                     <p>
-                        Parafia Rzymskokatolicka pw. św. Teresy<br>
-                        od Dzieciątka Jezus w Mrozach<br>
+                        <?php echo pm_get( 'parafia_nazwa' ); ?><br>
                         <?php echo pm_get( 'parafia_address', 'ul. Św. Teresy 3, 05-320 Mrozy' ); ?><br>
                         tel. <?php echo pm_get( 'parafia_phone', '25 757 41 93' ); ?><br>
                         <a href="mailto:<?php echo pm_get( 'parafia_email', 'parafiamrozy@gmail.com' ); ?>" style="color:var(--color-gold-light);">
@@ -522,8 +541,9 @@ get_header();
             </div>
         </div>
     </section>
+    <?php endif; ?>
 
-
+    <?php if ( pm_sekcja( 'cytat' ) ) : ?>
     <section class="quote-section">
         <div class="container">
             <div class="quote-inner">
@@ -532,15 +552,17 @@ get_header();
                          alt="Święta Teresa od Dzieciątka Jezus">
                 </div>
                 <blockquote>
-                    <p>„zrozumiałam, że kościół ma Serce i że Serce to <strong>PŁONIE MIŁOŚCIĄ</strong>. zrozumiałam, że jedynie miłość sprawia, że działają członki Kościoła, że gdyby Miłość wygasła, Apostołowie nie głosiliby Ewangelii, Męczennicy odmówiliby przelewania swojej krwi. Zrozumiałam, że miłość zawiera wszystkie powołania, że miłość jest wszystkim, obejmuje wszystkie czasy i wszystkie miejsca… jednym słowem jest wieczna!"</p>
-                    <cite>(por. św. Teresa od Dzieciątka Jezus, Dzieje Duszy, 2005, s. 264)</cite>
+                    <p><?php echo wp_kses( pm_opcja( 'pm_cytat_tresc' ), [ 'strong' => [], 'em' => [], 'b' => [], 'i' => [], 'br' => [] ] ); ?></p>
+                    <?php if ( '' !== pm_opcja( 'pm_cytat_zrodlo' ) ) : ?>
+                    <cite><?php echo esc_html( pm_opcja( 'pm_cytat_zrodlo' ) ); ?></cite>
+                    <?php endif; ?>
                 </blockquote>
             </div>
         </div>
     </section>
+    <?php endif; ?>
 
-
-
+    <?php if ( pm_sekcja( 'vatican' ) ) : ?>
     <section class="vatican-news-section">
         <div class="container">
             <h2 class="section-heading"><?php esc_html_e( 'Vatican News', 'parafia-mrozy' ); ?></h2>
@@ -594,8 +616,7 @@ get_header();
             </script>
         </div>
     </section>
-
-
+    <?php endif; ?>
 
 </main>
 

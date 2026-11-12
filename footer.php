@@ -12,9 +12,7 @@
                         <img src="<?php echo get_template_directory_uri(); ?>/img/logo.png" alt="Logo parafii" height="130" width="130">
                     <?php endif; ?>
                     <div class="footer-parish-name">
-                        Parafia Rzymskokatolicka<br>
-                        pw. św. Teresy od Dzieciątka Jezus<br>
-                        w Mrozach
+                        <?php echo implode( '<br>', array_map( 'esc_html', pm_wiersze( 'pm_stopka_nazwa' ) ) ); ?>
                     </div>
                 </div>
 
@@ -45,19 +43,18 @@
                     </p>
                     <p class="footer-przelew">
                         <span class="footer-przelew__label">Tytuł przelewu:</span>
-                        <span class="footer-przelew__val">Darowizna na cele kultu religijnego</span>
+                        <span class="footer-przelew__val"><?php echo pm_get( 'pm_tytul_przelewu' ); ?></span>
                     </p>
 
+                    <?php $przydatne = pm_linki( 'pm_stopka_linki' ); ?>
+                    <?php if ( $przydatne ) : ?>
                     <h4 style="margin-top:20px;">Przydatne strony</h4>
                     <ul>
-                        <li><a href="https://niezbednik.niedziela.pl/" target="_blank" rel="noopener">Niezbędnik Katolika</a></li>
-                        <li><a href="https://ekai.pl/" target="_blank" rel="noopener">Katolicka Agencja Informacyjna</a></li>
-                        <li><a href="https://www.vaticannews.va/pl.html" target="_blank" rel="noopener">Vatican News</a></li>
-                        <li><a href="https://diecezja.waw.pl/" target="_blank" rel="noopener">Diecezja Warszawsko-Praska</a></li>
-                        <li><a href="https://www.idziemy.pl/" target="_blank" rel="noopener">Idziemy</a></li>
-                        <li><a href="https://gosc.pl/" target="_blank" rel="noopener">Gość niedzielny</a></li>
-                        <li><a href="https://malygosc.pl/" target="_blank" rel="noopener">Mały gość</a></li>
+                        <?php foreach ( $przydatne as $link ) : ?>
+                        <li><a href="<?php echo esc_url( $link[1] ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $link[0] ); ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
 
@@ -69,7 +66,7 @@
                     <h4>Mapa dojazdu</h4>
                     <iframe
                         class="footer-map"
-                        src="<?php echo esc_url( get_theme_mod( 'parafia_map_url', 'https://maps.google.com/maps?q=Parafia+Rzk%C5%82+w%C5%9B%C4%85w+Teresa+Mrozy&output=embed' ) ); ?>"
+                        src="<?php echo esc_url( pm_opcja( 'parafia_map_url' ) ); ?>"
                         allowfullscreen=""
                         loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"
@@ -89,7 +86,9 @@
                 <?php bloginfo( 'name' ); ?>.
                 <?php esc_html_e( 'Wszelkie prawa zastrzeżone.', 'parafia-mrozy' ); ?>
             </p>
-            <p class="footer-credit">Stworzone z ❤️ przez Kacper Makowski na wyższą Chwałę Bożą</p>
+            <?php if ( '' !== pm_opcja( 'pm_stopka_podpis' ) ) : ?>
+            <p class="footer-credit"><?php echo esc_html( pm_opcja( 'pm_stopka_podpis' ) ); ?></p>
+            <?php endif; ?>
         </div>
     </div>
 

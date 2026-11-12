@@ -256,9 +256,9 @@ add_action( 'init', 'parafia_mrozy_galeria_migracja', 20 );
  * ---------------------------------------------------------------------- */
 
 function parafia_mrozy_galeria_menu() {
-    add_menu_page( 'Galerie', 'Galerie', 'edit_posts', PARAFIA_MROZY_GALERIA_MENU, '', 'dashicons-format-gallery', 6 );
-    add_submenu_page( PARAFIA_MROZY_GALERIA_MENU, 'Wszystkie galerie', 'Wszystkie galerie', 'edit_posts', PARAFIA_MROZY_GALERIA_MENU );
-    add_submenu_page( PARAFIA_MROZY_GALERIA_MENU, 'Dodaj galerię', 'Dodaj galerię', 'edit_posts', PARAFIA_MROZY_GALERIA_NOWA );
+    add_menu_page( 'Galerie', 'Galerie', 'edit_galerie', PARAFIA_MROZY_GALERIA_MENU, '', 'dashicons-format-gallery', 6 );
+    add_submenu_page( PARAFIA_MROZY_GALERIA_MENU, 'Wszystkie galerie', 'Wszystkie galerie', 'edit_galerie', PARAFIA_MROZY_GALERIA_MENU );
+    add_submenu_page( PARAFIA_MROZY_GALERIA_MENU, 'Dodaj galerię', 'Dodaj galerię', 'edit_galerie', PARAFIA_MROZY_GALERIA_NOWA );
 }
 add_action( 'admin_menu', 'parafia_mrozy_galeria_menu' );
 
