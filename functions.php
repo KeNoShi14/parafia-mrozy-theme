@@ -2380,6 +2380,14 @@ function parafia_seo_get_content( WP_REST_Request $req ) {
             $extra[] = $template_context[ $template ];
         }
 
+        $type_context = [
+            'ogloszenia' => 'Ogłoszenia parafialne parafii Mrozy na najbliższy tydzień — wydarzenia, nabożeństwa i informacje dla parafian.',
+            'intencje'   => 'Intencje Mszy Świętych w parafii Mrozy — lista intencji mszalnych na kolejne dni tygodnia.',
+        ];
+        if ( isset( $type_context[ $post->post_type ] ) ) {
+            $extra[] = $type_context[ $post->post_type ];
+        }
+
         $meta_keys = [
             '_kanc_adres'        => 'Adres kancelarii',
             '_kanc_telefon'      => 'Telefon',
@@ -2417,6 +2425,7 @@ function parafia_seo_get_content( WP_REST_Request $req ) {
         'content'        => mb_substr( $content, 0, 3000 ),
         'content_source' => $content_source,
         'post_type'      => $post->post_type,
+        'post_type_label'=> [ 'post' => 'Wpis', 'page' => 'Strona', 'ogloszenia' => 'Ogłoszenia parafialne', 'intencje' => 'Intencje Mszy Świętych' ][ $post->post_type ] ?? $post->post_type,
         'permalink'      => get_permalink( $post_id ),
         'template'       => get_post_meta( $post_id, '_wp_page_template', true ),
         'current_seo'    => [
@@ -2427,9 +2436,14 @@ function parafia_seo_get_content( WP_REST_Request $req ) {
     ]);
 }
 
+/** Typy treści z ramką „Auto SEO” i automatycznym generowaniem przy publikacji. */
+function parafia_seo_typy() {
+    return apply_filters( 'parafia_seo_typy', [ 'post', 'page', 'ogloszenia', 'intencje' ] );
+}
+
 function parafia_seo_on_publish( $new_status, $old_status, $post ) {
     if ( $new_status !== 'publish' ) return;
-    if ( ! in_array( $post->post_type, ['post', 'page'] ) ) return;
+    if ( ! in_array( $post->post_type, parafia_seo_typy(), true ) ) return;
     $existing = get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
     if ( ! empty( $existing ) ) return;
 
@@ -2455,7 +2469,7 @@ function parafia_seo_register_meta_box() {
         'parafia_seo_generator',
         '🔍 Auto SEO (Claude AI)',
         'parafia_seo_meta_box_html',
-        [ 'post', 'page' ],
+        parafia_seo_typy(),
         'side',
         'high'
     );
