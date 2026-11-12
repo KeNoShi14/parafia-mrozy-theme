@@ -63,6 +63,13 @@ get_header();
     </section>
     <?php endif; ?>
 
+    <?php
+    // Adwent: „Droga do Betlejem” — widoczne tylko w okresie ustawionym w panelu (menu „Adwent”).
+    if ( function_exists( 'parafia_mrozy_adwent_sekcja' ) ) {
+        parafia_mrozy_adwent_sekcja();
+    }
+    ?>
+
     <section class="section-wrapper aktualnosci-section">
         <div class="container">
             <h2 class="section-heading"><?php esc_html_e( 'Aktualności parafialne', 'parafia-mrozy' ); ?></h2>

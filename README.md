@@ -30,6 +30,7 @@ Strona główna składa się z następujących sekcji (w kolejności od góry):
 | Sekcja | Skąd pochodzi treść |
 |--------|---------------------|
 | **Slider Hero** | Wpisy z kategorii `aktualnosci` oznaczone jako hero (meta `_is_hero_slide = 1`) |
+| **Adwent — Droga do Betlejem** | Panel → Adwent (widoczne tylko w Adwencie i okresie Bożego Narodzenia) |
 | **Aktualności parafialne** | Wpisy z kategorii `aktualnosci` (6 najnowszych) |
 | **Ogłoszenia parafialne** | Typ postu `ogloszenia` (3 najnowsze) |
 | **Intencje Mszy Św.** | Typ postu `intencje` (3 najnowsze) |
@@ -37,6 +38,20 @@ Strona główna składa się z następujących sekcji (w kolejności od góry):
 | **Info panel** | Dane z Customizera (kancelaria + porządek mszy) |
 | **Cytat** | Statyczny tekst (edytowalny w `front-page.php`) |
 | **Galeria** | Wpisy z kategorii `galeria` (3 najnowsze) |
+
+---
+
+## Adwent — „Droga do Betlejem”
+
+Na stronie głównej, pod sliderem, w czasie Adwentu pojawia się sekcja z wędrówką Maryi i Józefa do Betlejem.
+
+- **Kiedy się pokazuje:** automatycznie od I niedzieli Adwentu (data liczona co roku sama) do terminu wybranego w panelu (domyślnie 6 stycznia). Od 25 grudnia widać grotę i Świętą Rodzinę we troje.
+- **Edycja treści:** menu **Adwent** w panelu WordPress. Można tam zmienić:
+  - tytuł i opis każdego dnia, Ewangelię, cytat, „Ślad historii” i kilometry,
+  - treść dnia Bożego Narodzenia, ramkę o niedzieli Gaudete, nagłówki tygodni, nazwy przystanków na mapie, nagłówek sekcji i przycisk.
+- **Podgląd dowolnego dnia:** w panelu przy każdym dniu jest link „Podgląd tego dnia na stronie” (działa tylko dla zalogowanych redaktorów, adres `/?adwent_podglad=RRRR-MM-DD`).
+- **Tryb testowy:** opcja w panelu — sekcję widzą wtedy tylko zalogowani redaktorzy.
+- Pliki: `inc/adwent.php` (logika, sekcja, panel), `inc/adwent-dane.php` (domyślne treści), `css/adwent.css`.
 
 ---
 

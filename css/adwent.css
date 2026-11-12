@@ -1,0 +1,238 @@
+/* ═══════════════════════════════════════════
+   Widżet adwentowy „Droga do Betlejem”
+   ═══════════════════════════════════════════ */
+
+.adwent-sekcja {
+    --adw-zloto: #e8c96d;
+    --adw-noc: #151b31;
+    --adw-tekst: #efe9dc;
+    --adw-tekst-2: #d9d3c5;
+    --adw-tekst-3: #b9b3a6;
+    --adw-roz: #e08fb0;
+    background: #faf8f3;
+    padding: 56px 0;
+}
+[data-theme="dark"] .adwent-sekcja { background: var(--bg-secondary, #141414); }
+
+.adw-podglad {
+    margin: 0 0 20px;
+    padding: 10px 16px;
+    border: 1px dashed var(--color-gold);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--color-gold-dark);
+    background: rgba(201, 168, 76, 0.08);
+}
+
+/* Nagłówek */
+.adw-naglowek {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+.adw-naglowek-male {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #8a6a1f;
+}
+.adw-tytul {
+    margin: 0;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #1a1a2e;
+}
+.adw-kreska { width: 64px; height: 2px; background: var(--color-gold); margin: 4px 0; }
+.adw-wstep {
+    margin: 0;
+    max-width: 640px;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #4a4a4a;
+}
+[data-theme="dark"] .adw-naglowek-male { color: var(--color-gold-light); }
+[data-theme="dark"] .adw-tytul { color: var(--color-gold-light); }
+[data-theme="dark"] .adw-wstep { color: var(--text-primary, #d4d4d4); }
+
+/* Karta */
+.adw-karta {
+    background: var(--adw-noc);
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(20, 24, 45, 0.18);
+    color: var(--adw-tekst);
+}
+.adw-scena { display: block; width: 100%; height: auto; }
+.adw-scena--waska { display: none; }
+@media (max-width: 640px) {
+    .adw-scena--szeroka { display: none; }
+    .adw-scena--waska { display: block; }
+}
+
+.adw-migotanie { animation: adw-migotanie 5s ease-in-out infinite; }
+@keyframes adw-migotanie { 50% { opacity: 0.5; } }
+.adw-krok { animation: adw-krok 1.1s ease-in-out infinite; }
+@keyframes adw-krok { 50% { transform: translateY(-1.5px); } }
+@media (prefers-reduced-motion: reduce) {
+    .adw-migotanie, .adw-krok { animation: none; }
+}
+
+.adw-tresc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 36px;
+    padding: clamp(20px, 3vw, 40px);
+    border-top: 1px solid rgba(201, 168, 76, 0.25);
+}
+.adw-dzien {
+    flex: 999 1 520px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.adw-bok {
+    flex: 1 1 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.adw-tydzien {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--adw-zloto);
+}
+.adw-data, .adw-etykieta {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--adw-tekst-3);
+}
+.adw-dzien-tytul {
+    margin: 2px 0 0;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--adw-zloto);
+}
+.adw-ewangelia { font-size: 0.9rem; font-weight: 600; color: var(--adw-tekst-2); }
+.adw-cytat {
+    margin: 0;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    line-height: 1.45;
+    color: #f3ead2;
+}
+.adw-opis { margin: 4px 0 0; font-size: 0.95rem; line-height: 1.75; color: var(--adw-tekst-2); }
+
+.adw-ramka {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 6px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    color: var(--adw-zloto);
+}
+.adw-ramka svg { flex: none; margin-top: 2px; }
+.adw-ramka-tytul { display: block; margin-bottom: 4px; font-size: 0.82rem; letter-spacing: 0.06em; color: var(--adw-zloto); }
+.adw-ramka p { margin: 0; font-size: 0.9rem; line-height: 1.65; color: var(--adw-tekst-2); }
+.adw-ramka--gaudete { background: rgba(224, 143, 176, 0.1); border-color: rgba(224, 143, 176, 0.4); }
+.adw-ramka--gaudete .adw-ramka-tytul { color: #f0b6cc; }
+
+.adw-przycisk {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    margin-top: 8px;
+    padding: 0 20px;
+    border: 1px solid var(--color-gold);
+    border-radius: 999px;
+    color: var(--adw-zloto);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: var(--transition);
+}
+.adw-przycisk:hover, .adw-przycisk:focus-visible { background: var(--color-gold); color: #1a1a2e; }
+
+/* Bok: licznik, kilometry, wieniec */
+.adw-licznik { display: flex; flex-direction: column; gap: 2px; }
+.adw-licznik-liczba {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--adw-zloto);
+}
+.adw-km { display: flex; flex-direction: column; gap: 10px; }
+.adw-km-siatka { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.adw-km-pole {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+}
+.adw-km-pole strong { font-size: 1.35rem; color: var(--adw-tekst); }
+.adw-km-pole--zloto strong { color: var(--adw-zloto); }
+.adw-pasek { height: 6px; border-radius: 3px; background: rgba(232, 201, 109, 0.18); overflow: hidden; }
+.adw-pasek span { display: block; height: 100%; border-radius: 3px; background: var(--adw-zloto); }
+.adw-km-podpis { font-size: 0.82rem; color: var(--adw-tekst-3); }
+
+.adw-wieniec { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.adw-swiece { display: flex; align-items: flex-end; justify-content: center; gap: 20px; height: 92px; }
+.adw-swieca { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.adw-plomien { visibility: hidden; }
+.adw-swieca--pali .adw-plomien { visibility: visible; }
+.adw-wosk {
+    display: block;
+    width: 14px;
+    height: var(--h, 50px);
+    border-radius: 3px 3px 1px 1px;
+    background: #8a66b8;
+    opacity: 0.4;
+}
+.adw-swieca--rozowa .adw-wosk { background: var(--adw-roz); }
+.adw-swieca--pali .adw-wosk { opacity: 1; }
+.adw-swiece-nr { display: flex; justify-content: center; gap: 20px; }
+.adw-swiece-nr span { width: 14px; text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--adw-tekst-3); }
+.adw-galazki {
+    display: block;
+    width: 190px;
+    height: 12px;
+    margin-top: -8px;
+    border-radius: 999px;
+    background: #3f6b4a;
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+}
+.adw-wieniec-podpis { font-size: 0.82rem; color: var(--adw-tekst-2); text-align: center; }
+
+@media (max-width: 640px) {
+    .adwent-sekcja { padding: 40px 0; }
+    .adw-dzien-tytul { font-size: 1.5rem; }
+    .adw-cytat { font-size: 1.15rem; }
+}
