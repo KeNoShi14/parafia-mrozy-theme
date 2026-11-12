@@ -2,10 +2,11 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'PARAFIA_MROZY_VERSION', '1.2.0' );
+define( 'PARAFIA_MROZY_VERSION', '1.3.0' );
 
 require_once get_template_directory() . '/inc/webp.php';
 require_once get_template_directory() . '/inc/galeria.php';
+require_once get_template_directory() . '/inc/adwent.php';
 
 function parafia_mrozy_setup() {
     load_theme_textdomain( 'parafia-mrozy', get_template_directory() . '/languages' );
