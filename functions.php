@@ -2468,7 +2468,6 @@ function parafia_seo_meta_box_html( $post ) {
     $keywords    = get_post_meta( $post->ID, '_yoast_wpseo_focuskw',  true );
     $webhook     = get_option('parafia_seo_webhook_url', '');
     $token       = get_option('parafia_seo_token', '');
-    $wp_url      = get_rest_url( null, 'parafia/v1' );
     ?>
     <style>
         .seo-mb { font-size:13px; }
@@ -2507,9 +2506,7 @@ function parafia_seo_meta_box_html( $post ) {
         <?php if ( $webhook && $token ) : ?>
         <button type="button" class="seo-mb__btn" id="seo-generate-btn"
                 data-post-id="<?php echo esc_attr( $post->ID ); ?>"
-                data-webhook="<?php echo esc_attr( $webhook ); ?>"
-                data-token="<?php echo esc_attr( $token ); ?>"
-                data-wp-api="<?php echo esc_attr( $wp_url ); ?>">
+                data-nonce="<?php echo esc_attr( wp_create_nonce( 'parafia_seo_generuj_' . $post->ID ) ); ?>">
             ✨ Generuj opisy SEO
         </button>
         <p class="seo-mb__hint">Odświeży się po ok. 10–20 sekundach</p>
@@ -2523,7 +2520,6 @@ function parafia_seo_meta_box_html( $post ) {
         $('#seo-generate-btn').on('click', function(){
             var btn      = $(this);
             var postId   = btn.data('post-id');
-            var webhook  = btn.data('webhook');
             var status   = $('#seo-status');
 
             btn.prop('disabled', true).text('⏳ Generowanie…');
@@ -2533,17 +2529,24 @@ function parafia_seo_meta_box_html( $post ) {
                   .show();
 
             $.ajax({
-                url:  webhook,
+                url:  <?php echo wp_json_encode( admin_url( 'admin-ajax.php' ) ); ?>,
                 type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    post_id:   postId,
-                    post_type: '<?php echo esc_js( $post->post_type ); ?>',
-                    title:     '<?php echo esc_js( $post->post_title ); ?>',
-                    site_url:  '<?php echo esc_js( get_site_url() ); ?>',
-                    manual:    true
-                }),
-                success: function() {
+                dataType: 'json',
+                timeout: 30000,
+                data: {
+                    action:  'parafia_seo_generuj',
+                    post_id: postId,
+                    nonce:   btn.data('nonce')
+                },
+                success: function( odp ) {
+                    if ( ! odp || ! odp.success ) {
+                        status.removeClass('seo-mb__status--loading')
+                              .addClass('seo-mb__status--err')
+                              .text('❌ Błąd: ' + ( odp && odp.data && odp.data.message ? odp.data.message : 'nieznany błąd.' ));
+                        btn.prop('disabled', false).text('✨ Generuj opisy SEO');
+                        return;
+                    }
+                    status.text('Wysłano do Claude AI — opisy pojawią się za ok. 15 sekund…');
                     setTimeout(function(){
                         status.removeClass('seo-mb__status--loading')
                               .addClass('seo-mb__status--ok')
@@ -2551,10 +2554,13 @@ function parafia_seo_meta_box_html( $post ) {
                         btn.prop('disabled', false).text('🔄 Generuj ponownie');
                     }, 15000);
                 },
-                error: function(xhr) {
+                error: function( xhr, textStatus ) {
+                    var msg = xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message
+                        ? xhr.responseJSON.data.message
+                        : ( 'timeout' === textStatus ? 'WordPress nie doczekał się odpowiedzi.' : 'brak odpowiedzi WordPressa (' + ( xhr.status || textStatus ) + ').' );
                     status.removeClass('seo-mb__status--loading')
                           .addClass('seo-mb__status--err')
-                          .text('❌ Błąd: ' + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Sprawdź konfigurację webhooka.'));
+                          .text('❌ Błąd: ' + msg);
                     btn.prop('disabled', false).text('✨ Generuj opisy SEO');
                 }
             });
@@ -2563,6 +2569,63 @@ function parafia_seo_meta_box_html( $post ) {
     </script>
     <?php
 }
+
+/**
+ * Przycisk „Generuj opisy SEO”: WordPress (serwer) wywołuje webhook n8n.
+ * Dzięki temu nie ma problemów z CORS ani http/https w przeglądarce,
+ * adres webhooka i token nie trafiają do kodu strony, a błąd n8n jest czytelny.
+ */
+function parafia_seo_ajax_generuj() {
+    $post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+    $nonce   = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+    if ( ! $post_id || ! wp_verify_nonce( $nonce, 'parafia_seo_generuj_' . $post_id ) ) {
+        wp_send_json_error( [ 'message' => 'Sesja wygasła — odśwież stronę i spróbuj ponownie.' ], 403 );
+    }
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        wp_send_json_error( [ 'message' => 'Brak uprawnień do edycji tego wpisu.' ], 403 );
+    }
+    $post = get_post( $post_id );
+    if ( ! $post ) {
+        wp_send_json_error( [ 'message' => 'Wpis nie istnieje.' ], 404 );
+    }
+
+    $webhook_url = get_option( 'parafia_seo_webhook_url', '' );
+    if ( ! $webhook_url ) {
+        wp_send_json_error( [ 'message' => 'Brak adresu webhooka N8N w Ustawienia → Ogólne.' ], 400 );
+    }
+
+    $odp = wp_remote_post( $webhook_url, [
+        'timeout' => 20,
+        'headers' => [ 'Content-Type' => 'application/json' ],
+        'body'    => wp_json_encode( [
+            'post_id'   => $post->ID,
+            'post_type' => $post->post_type,
+            'title'     => $post->post_title,
+            'site_url'  => get_site_url(),
+            'manual'    => true,
+        ] ),
+    ] );
+
+    if ( is_wp_error( $odp ) ) {
+        wp_send_json_error( [ 'message' => 'Nie udało się połączyć z N8N (' . $webhook_url . '): ' . $odp->get_error_message() ], 502 );
+    }
+
+    $kod = (int) wp_remote_retrieve_response_code( $odp );
+    if ( $kod < 200 || $kod >= 300 ) {
+        $tresc = json_decode( wp_remote_retrieve_body( $odp ), true );
+        $opis  = is_array( $tresc ) && ! empty( $tresc['message'] ) ? $tresc['message'] : wp_strip_all_tags( mb_substr( wp_remote_retrieve_body( $odp ), 0, 200 ) );
+        if ( 404 === $kod && false !== strpos( $webhook_url, '/webhook-test/' ) ) {
+            $opis .= ' — to adres testowy; w ustawieniach wpisz adres produkcyjny (/webhook/…) i aktywuj workflow.';
+        } elseif ( 404 === $kod ) {
+            $opis .= ' — sprawdź, czy workflow jest aktywny w N8N.';
+        }
+        wp_send_json_error( [ 'message' => 'N8N odpowiedział kodem ' . $kod . ( $opis ? ': ' . $opis : '' ) ], 502 );
+    }
+
+    wp_send_json_success( [ 'status' => $kod ] );
+}
+add_action( 'wp_ajax_parafia_seo_generuj', 'parafia_seo_ajax_generuj' );
 
 function parafia_seo_settings() {
     add_settings_section( 'parafia_seo_section', 'Auto SEO (Claude AI)', '__return_false', 'general' );
