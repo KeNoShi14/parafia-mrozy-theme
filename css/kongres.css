@@ -162,6 +162,17 @@
     margin-bottom: 12px;
 }
 
+.kongres-patron-zrodlo {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--text-secondary, var(--color-text-light));
+}
+
+.kongres-patron-zrodlo a {
+    color: inherit;
+    text-decoration: underline;
+}
+
 .kongres-patron-nastepny {
     margin-top: 16px;
     padding-top: 12px;
