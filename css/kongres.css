@@ -93,7 +93,7 @@
 /* Patron miesiąca */
 .kongres-patron {
     display: grid;
-    grid-template-columns: 190px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 190px;
     background: var(--card-bg, #fff);
     border: 1px solid var(--card-border, var(--color-mid-gray));
     border-top: 3px solid var(--color-gold);
@@ -103,6 +103,7 @@
 }
 
 .kongres-patron-foto {
+    order: 2;
     display: block;
     position: relative;
     min-height: 230px;
@@ -207,7 +208,7 @@
 
 @media (max-width: 420px) {
     .kongres-patron {
-        grid-template-columns: 120px minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr) 120px;
     }
     .kongres-patron-foto {
         min-height: 180px;
