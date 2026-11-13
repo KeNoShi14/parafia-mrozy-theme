@@ -20,23 +20,33 @@
     margin-bottom: 12px;
 }
 
-.kongres-haslo {
-    font-size: 1.25rem;
-    font-style: italic;
-    font-weight: 500;
-    line-height: 1.5;
-    color: var(--text-primary, var(--color-text));
-    border-left: 3px solid var(--color-gold);
-    padding-left: 16px;
-    margin-bottom: 22px;
+/* Oficjalny znak Kongresu – wg Katalogu znaku: skalowanie wyłącznie proporcjonalne,
+   pole ochronne zawarte w pliku SVG, min. ok. 120 px wysokości samego znaku,
+   bez cieni, filtrów i animacji. Na ciemnym tle wersja biała. */
+.kongres-logo {
+    display: block;
+    width: 462px;            /* znak ≈ 126 px wysokości */
+    max-width: 100%;
+    margin: -10px 0 8px -16px; /* wyrównanie do tekstu; pole ochronne jest w pliku */
 }
 
-.kongres-haslo span {
-    display: inline-block;
-    margin-left: 8px;
-    font-size: 0.85rem;
-    font-style: normal;
-    color: var(--text-secondary, var(--color-text-light));
+.kongres-logo picture,
+.kongres-logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.kongres-logo-ciemne {
+    display: none !important;
+}
+
+[data-theme="dark"] .kongres-logo-jasne {
+    display: none !important;
+}
+
+[data-theme="dark"] .kongres-logo-ciemne {
+    display: block !important;
 }
 
 .kongres-o h3 {
@@ -203,6 +213,16 @@
     }
     .kongres-patron {
         max-width: 560px;
+    }
+}
+
+@media (max-width: 600px) {
+    .kongres-logo {
+        width: 260px;        /* wersja pionowa – znak ≈ 230 px wysokości */
+        margin: 0 auto 8px;
+    }
+    .kongres-diecezja {
+        text-align: center;
     }
 }
 

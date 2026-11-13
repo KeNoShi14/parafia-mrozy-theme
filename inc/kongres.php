@@ -7,6 +7,10 @@
  * Pokazuje się sama od pierwszego do ostatniego miesiąca z listy patronów;
  * można ją ukryć w panelu Parafia → Ustawienia strony → sekcje.
  *
+ * Logo: oficjalne pliki znaku (img/kongres/logo-*.svg) przycięte z polem ochronnym 0,5 X
+ * zgodnie z „Katalogiem znaku” Kongresu – bez zmian kolorów, proporcji, cieni i efektów.
+ * Minimalna wysokość pełnego znaku w zastosowaniach cyfrowych: ok. 120 px.
+ *
  * Dane patronów, opisy i zdjęcia (img/kongres/) pochodzą z oficjalnej strony Kongresu:
  * https://www.kongresdwp.pl/index.php?display=patroni
  */
@@ -101,8 +105,20 @@ function parafia_kongres_sekcja() {
             <div class="kongres-grid">
 
                 <div class="kongres-o">
-                    <p class="kongres-diecezja">Diecezja Warszawsko-Praska · 29 listopada 2026 – 21 listopada 2027</p>
-                    <p class="kongres-haslo">„Dał się poznać przy łamaniu chleba”<span>(Łk 24,35)</span></p>
+                    <?php $logo = get_template_directory_uri() . '/img/kongres/'; ?>
+                    <a class="kongres-logo" href="<?php echo esc_url( PARAFIA_KONGRES_URL ); ?>" target="_blank" rel="noopener">
+                        <picture class="kongres-logo-jasne">
+                            <source media="(max-width: 600px)" srcset="<?php echo esc_url( $logo . 'logo-pion.svg' ); ?>" width="424" height="421">
+                            <img src="<?php echo esc_url( $logo . 'logo-poziom.svg' ); ?>" width="632" height="219" loading="lazy" decoding="async"
+                                 alt="I Diecezjalny Kongres Eucharystyczny Diecezji Warszawsko-Praskiej – „Dał się poznać przy łamaniu chleba”">
+                        </picture>
+                        <picture class="kongres-logo-ciemne">
+                            <source media="(max-width: 600px)" srcset="<?php echo esc_url( $logo . 'logo-pion-bialy.svg' ); ?>" width="424" height="421">
+                            <img src="<?php echo esc_url( $logo . 'logo-poziom-bialy.svg' ); ?>" width="632" height="219" loading="lazy" decoding="async"
+                                 alt="I Diecezjalny Kongres Eucharystyczny Diecezji Warszawsko-Praskiej – „Dał się poznać przy łamaniu chleba”">
+                        </picture>
+                    </a>
+                    <p class="kongres-diecezja">29 listopada 2026 – 21 listopada 2027</p>
 
                     <h3>Czym jest Kongres Eucharystyczny?</h3>
                     <p>To rok, w którym cała nasza diecezja – parafie, wspólnoty, rodziny i szkoły – wspólnie wraca do źródła: do Jezusa obecnego w Najświętszym Sakramencie. Kongres ma pomóc nam odnowić wiarę w realną obecność Chrystusa w Eucharystii i przeżywać Mszę Świętą bardziej świadomie.</p>

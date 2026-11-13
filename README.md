@@ -63,6 +63,7 @@ Pod ogłoszeniami, od listopada 2026 do listopada 2027, pokazuje się sekcja o K
 - **Włączanie/ukrywanie:** Parafia → Ustawienia strony → „Strona główna – widoczne sekcje”.
 - **Patron zmienia się sam** z początkiem miesiąca. Lista patronów i haseł: `parafia_kongres_patroni()` w `inc/kongres.php`.
 - **Zdjęcia** leżą w `img/kongres/<slug>.webp` (pobrane z kongresdwp.pl, gdzie podane są źródła wizerunków; pod zdjęciem jest podpis „Fot.: kongresdwp.pl”). Trzymamy je lokalnie, bo CSP serwera blokuje obrazki z obcych domen.
+- **Logo Kongresu:** oficjalne pliki znaku z kongresdwp.pl (`img/kongres/logo-poziom*.svg` – komputer, `logo-pion*.svg` – telefon; wersje `-bialy` w trybie ciemnym). Zgodnie z „Katalogiem znaku”: bez zmian kolorów, fontu i proporcji, bez cieni i efektów, pole ochronne 0,5 X (X = średnica Hostii) jest wliczone w plik, a pełny znak ma min. ok. 120 px wysokości – nie zmniejszaj go w CSS poniżej tej wartości.
 - **Podgląd innego miesiąca** (dla zalogowanych redaktorów): `/?kongres_podglad=2027-04`.
 - Pliki: `inc/kongres.php`, `css/kongres.css`, `img/kongres/`.
 
