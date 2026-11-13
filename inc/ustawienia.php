@@ -45,6 +45,7 @@ function parafia_mrozy_pola_ustawien() {
         'pm_sekcja_adwent'       => [ 'Adwent – „Droga do Betlejem”', 'adwent', '1', 'sekcje', 'Pokazuje się sama tylko od I niedzieli Adwentu do terminu ustawionego w menu Adwent. Treści, termin i tryb testowy: menu Adwent.' ],
         'pm_sekcja_aktualnosci'  => [ 'Aktualności parafialne', 'wlacz', '1', 'sekcje', '' ],
         'pm_sekcja_ogloszenia'   => [ 'Ogłoszenia parafialne', 'wlacz', '1', 'sekcje', '' ],
+        'pm_sekcja_kongres'      => [ 'Kongres Eucharystyczny (pod ogłoszeniami)', 'wlacz', '1', 'sekcje', 'Pokazuje się sama od listopada 2026 do listopada 2027 – z patronem bieżącego miesiąca. Patroni i zdjęcia: plik inc/kongres.php.' ],
         'pm_sekcja_intencje'     => [ 'Intencje Mszy św.', 'wlacz', '1', 'sekcje', '' ],
         'pm_sekcja_rocznica'     => [ 'Licznik do rocznicy', 'wlacz', '1', 'sekcje', '' ],
         'pm_sekcja_galeria'      => [ 'Galeria', 'wlacz', '1', 'sekcje', '' ],

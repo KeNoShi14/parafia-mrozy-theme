@@ -33,6 +33,7 @@ Strona główna składa się z następujących sekcji (w kolejności od góry):
 | **Adwent — Droga do Betlejem** | Panel → Adwent (widoczne tylko w Adwencie i okresie Bożego Narodzenia) |
 | **Aktualności parafialne** | Wpisy z kategorii `aktualnosci` (6 najnowszych) |
 | **Ogłoszenia parafialne** | Typ postu `ogloszenia` (3 najnowsze) |
+| **Kongres Eucharystyczny** | `inc/kongres.php` — opis Kongresu i patron bieżącego miesiąca (widoczne 11.2026–11.2027) |
 | **Intencje Mszy Św.** | Typ postu `intencje` (3 najnowsze) |
 | **Vatican News** | Typ postu `vatican_news` (3 najnowsze) |
 | **Info panel** | Dane z Customizera (kancelaria + porządek mszy) |
@@ -52,6 +53,17 @@ Na stronie głównej, pod sliderem, w czasie Adwentu pojawia się sekcja z wędr
 - **Podgląd dowolnego dnia:** w panelu przy każdym dniu jest link „Podgląd tego dnia na stronie” (działa tylko dla zalogowanych redaktorów, adres `/?adwent_podglad=RRRR-MM-DD`).
 - **Tryb testowy:** opcja w panelu — sekcję widzą wtedy tylko zalogowani redaktorzy.
 - Pliki: `inc/adwent.php` (logika, sekcja, panel), `inc/adwent-dane.php` (domyślne treści), `css/adwent.css`.
+
+---
+
+## Kongres Eucharystyczny Diecezji Warszawsko-Praskiej
+
+Pod ogłoszeniami, od listopada 2026 do listopada 2027, pokazuje się sekcja o Kongresie (29.11.2026 – 21.11.2027): krótki opis, hasło, patron bieżącego miesiąca ze zdjęciem oraz odnośniki do [kongresdwp.pl](https://www.kongresdwp.pl/).
+
+- **Włączanie/ukrywanie:** Parafia → Ustawienia strony → „Strona główna – widoczne sekcje”.
+- **Patron zmienia się sam** z początkiem miesiąca. Lista patronów, haseł i adresów zdjęć: `parafia_kongres_patroni()` w `inc/kongres.php`.
+- **Podgląd innego miesiąca** (dla zalogowanych redaktorów): `/?kongres_podglad=2027-04`.
+- Pliki: `inc/kongres.php`, `css/kongres.css`.
 
 ---
 

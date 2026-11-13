@@ -1,0 +1,207 @@
+/* Kongres Eucharystyczny Diecezji Warszawsko-Praskiej — sekcja na stronie głównej */
+
+.kongres-section {
+    background: var(--section-alt-bg, #f9f7f3);
+}
+
+.kongres-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 40px;
+    align-items: start;
+}
+
+.kongres-diecezja {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--color-gold-dark);
+    margin-bottom: 12px;
+}
+
+.kongres-haslo {
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-primary, var(--color-text));
+    border-left: 3px solid var(--color-gold);
+    padding-left: 16px;
+    margin-bottom: 22px;
+}
+
+.kongres-haslo span {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 0.85rem;
+    font-style: normal;
+    color: var(--text-secondary, var(--color-text-light));
+}
+
+.kongres-o h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary, var(--color-text));
+}
+
+.kongres-o p:not(.kongres-diecezja):not(.kongres-haslo) {
+    line-height: 1.8;
+    margin-bottom: 12px;
+    color: var(--text-primary, var(--color-text));
+}
+
+.kongres-przyciski {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 24px;
+    margin-top: 20px;
+}
+
+.kongres-btn {
+    display: inline-block;
+    background: var(--color-gold);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 11px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.kongres-btn:hover,
+.kongres-btn:focus-visible {
+    background: var(--color-gold-dark);
+    color: #fff;
+}
+
+.kongres-link {
+    color: var(--color-gold-dark);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.kongres-link:hover,
+.kongres-link:focus-visible {
+    text-decoration: underline;
+}
+
+/* Patron miesiąca */
+.kongres-patron {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--card-border, var(--color-mid-gray));
+    border-top: 3px solid var(--color-gold);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.kongres-patron-foto {
+    display: block;
+    position: relative;
+    min-height: 230px;
+    overflow: hidden;
+    background: var(--bg-tertiary, #eee);
+}
+
+.kongres-patron-foto img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 0.5s ease;
+}
+
+.kongres-patron-foto:hover img {
+    transform: scale(1.03);
+}
+
+.kongres-patron-tekst {
+    padding: 20px 22px 22px;
+}
+
+.kongres-patron-etykieta {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--color-gold-dark);
+    margin-bottom: 6px;
+}
+
+.kongres-patron-imie {
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 6px;
+}
+
+.kongres-patron-imie a {
+    color: var(--text-primary, var(--color-text));
+    text-decoration: none;
+}
+
+.kongres-patron-imie a:hover {
+    color: var(--color-gold-dark);
+}
+
+.kongres-patron-haslo {
+    font-style: italic;
+    color: var(--text-secondary, var(--color-text-light));
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.kongres-patron-nastepny {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color, var(--color-mid-gray));
+    font-size: 13px;
+    color: var(--text-secondary, var(--color-text-light));
+}
+
+[data-theme="dark"] .kongres-section {
+    background: var(--section-alt-bg);
+}
+
+[data-theme="dark"] .kongres-btn {
+    color: #111;
+}
+
+[data-theme="dark"] .kongres-link,
+[data-theme="dark"] .kongres-diecezja,
+[data-theme="dark"] .kongres-patron-etykieta {
+    color: var(--color-gold-light);
+}
+
+@media (max-width: 900px) {
+    .kongres-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+    .kongres-patron {
+        max-width: 560px;
+    }
+}
+
+@media (max-width: 420px) {
+    .kongres-patron {
+        grid-template-columns: 120px minmax(0, 1fr);
+    }
+    .kongres-patron-foto {
+        min-height: 180px;
+    }
+    .kongres-patron-tekst {
+        padding: 16px;
+    }
+}
