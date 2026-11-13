@@ -132,6 +132,12 @@ get_header();
     </section>
     <?php endif; ?>
 
+    <?php
+    // Kongres Eucharystyczny DWP — widoczny od 11.2026 do 11.2027 (inc/kongres.php).
+    if ( function_exists( 'parafia_kongres_sekcja' ) ) {
+        parafia_kongres_sekcja();
+    }
+    ?>
 
     <?php if ( pm_sekcja( 'intencje' ) ) : ?>
     <section class="section-wrapper intencje-section">
