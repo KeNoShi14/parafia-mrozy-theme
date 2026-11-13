@@ -61,9 +61,10 @@ Na stronie głównej, pod sliderem, w czasie Adwentu pojawia się sekcja z wędr
 Pod ogłoszeniami, od listopada 2026 do listopada 2027, pokazuje się sekcja o Kongresie (29.11.2026 – 21.11.2027): krótki opis, hasło, patron bieżącego miesiąca ze zdjęciem oraz odnośniki do [kongresdwp.pl](https://www.kongresdwp.pl/).
 
 - **Włączanie/ukrywanie:** Parafia → Ustawienia strony → „Strona główna – widoczne sekcje”.
-- **Patron zmienia się sam** z początkiem miesiąca. Lista patronów, haseł i adresów zdjęć: `parafia_kongres_patroni()` w `inc/kongres.php`.
+- **Patron zmienia się sam** z początkiem miesiąca. Lista patronów i haseł: `parafia_kongres_patroni()` w `inc/kongres.php`.
+- **Zdjęcia** leżą w `img/kongres/<slug>.webp` (pobrane z kongresdwp.pl, gdzie podane są źródła wizerunków; pod zdjęciem jest podpis „Fot.: kongresdwp.pl”). Trzymamy je lokalnie, bo CSP serwera blokuje obrazki z obcych domen.
 - **Podgląd innego miesiąca** (dla zalogowanych redaktorów): `/?kongres_podglad=2027-04`.
-- Pliki: `inc/kongres.php`, `css/kongres.css`.
+- Pliki: `inc/kongres.php`, `css/kongres.css`, `img/kongres/`.
 
 ---
 

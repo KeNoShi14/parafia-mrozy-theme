@@ -7,7 +7,7 @@
  * Pokazuje się sama od pierwszego do ostatniego miesiąca z listy patronów;
  * można ją ukryć w panelu Parafia → Ustawienia strony → sekcje.
  *
- * Dane patronów, opisy i zdjęcia pochodzą z oficjalnej strony Kongresu:
+ * Dane patronów, opisy i zdjęcia (img/kongres/) pochodzą z oficjalnej strony Kongresu:
  * https://www.kongresdwp.pl/index.php?display=patroni
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -17,7 +17,7 @@ define( 'PARAFIA_KONGRES_PATRONI_URL', 'https://www.kongresdwp.pl/index.php?disp
 
 /**
  * Patroni miesięcy: 'RRRR-MM' => [ imię, hasło, slug na kongresdwp.pl ].
- * Zdjęcie: https://www.kongresdwp.pl/assets/kongres/patroni/<slug>.webp
+ * Zdjęcie: img/kongres/<slug>.webp (pobrane z kongresdwp.pl, tam też źródła wizerunków).
  */
 function parafia_kongres_patroni() {
     return [
@@ -64,7 +64,7 @@ function parafia_kongres_dane( $klucz ) {
         'imie'    => $imie,
         'haslo'   => $haslo,
         'url'     => PARAFIA_KONGRES_PATRONI_URL . '&patron=' . rawurlencode( $slug ),
-        'foto'    => 'https://www.kongresdwp.pl/assets/kongres/patroni/' . rawurlencode( $slug ) . '.webp',
+        'foto'    => get_template_directory_uri() . '/img/kongres/' . rawurlencode( $slug ) . '.webp',
         'miesiac' => parafia_kongres_miesiac( $mies ) . ' ' . $rok,
     ];
 }
@@ -125,6 +125,7 @@ function parafia_kongres_sekcja() {
                         </h3>
                         <p class="kongres-patron-haslo"><?php echo esc_html( $patron['haslo'] ); ?></p>
                         <a class="kongres-link" href="<?php echo esc_url( $patron['url'] ); ?>" target="_blank" rel="noopener">Poznaj patrona »</a>
+                        <p class="kongres-patron-zrodlo">Fot.: <a href="<?php echo esc_url( PARAFIA_KONGRES_PATRONI_URL ); ?>" target="_blank" rel="noopener">kongresdwp.pl</a></p>
                         <?php if ( $nast ) : ?>
                         <p class="kongres-patron-nastepny">W kolejnym miesiącu: <strong><?php echo esc_html( $nast['imie'] ); ?></strong></p>
                         <?php endif; ?>
