@@ -197,6 +197,7 @@ function parafia_mrozy_fallback_menu() {
             <li><a href="' . esc_url( home_url( '/duszpasterstwo/msze-swiete/' ) ) . '">Msze Święte</a></li>
             <li><a href="' . esc_url( home_url( '/duszpasterstwo/sakramenty/' ) ) . '">Sakramenty</a></li>
             <li><a href="' . esc_url( home_url( '/kontakt/' ) ) . '">Kancelaria</a></li>
+            <li><a href="' . esc_url( home_url( '/standardy-ochrony-dzieci/' ) ) . '">Standardy ochrony dzieci</a></li>
         </ul>
     </li>';
     echo '<li><a href="#" aria-haspopup="true">Grupy</a>
@@ -215,7 +216,6 @@ function parafia_mrozy_fallback_menu() {
         </ul>
     </li>';
     echo '<li><a href="' . esc_url( home_url( '/wsparcie/' ) ) . '">Wsparcie</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/standardy-ochrony-dzieci/' ) ) . '">Standardy ochrony dzieci</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/kontakt/' ) ) . '">Kontakt</a></li>';
     echo '</ul>';
 }

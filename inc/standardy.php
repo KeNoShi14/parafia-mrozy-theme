@@ -4,7 +4,7 @@
  *
  * - strona /standardy-ochrony-dzieci/ (szablon page-standardy-ochrony-dzieci.php),
  * - dokument PDF w pliki/standardy-ochrony-dzieci.pdf (nowa wersja = podmiana pliku),
- * - jednorazowe utworzenie strony i dodanie zakładki do „Menu główne”.
+ * - jednorazowe utworzenie strony i dodanie jej do „Menu główne” pod „Duszpasterstwo”.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -53,18 +53,35 @@ function parafia_standardy_zasoby() {
 }
 add_action( 'wp_enqueue_scripts', 'parafia_standardy_zasoby', 20 );
 
+/** ID pozycji „Duszpasterstwo” (najwyższy poziom) w danym menu albo 0. */
+function parafia_standardy_rodzic_menu( $items ) {
+    foreach ( (array) $items as $item ) {
+        if ( 0 === (int) $item->menu_item_parent
+            && 'duszpasterstwo' === mb_strtolower( trim( wp_strip_all_tags( $item->title ) ) ) ) {
+            return (int) $item->ID;
+        }
+    }
+    return 0;
+}
+
 /**
- * Jednorazowo: tworzy stronę (jeśli jej nie ma) i dodaje ją jako zakładkę
- * na końcu menu przypisanego do lokalizacji „Menu główne”.
- * Później zakładkę można dowolnie przenieść lub usunąć w Wygląd → Menu – nie wróci.
+ * Jednorazowo: tworzy stronę (jeśli jej nie ma) i umieszcza ją w „Menu główne”
+ * jako podstronę „Duszpasterstwo” (gdy takiej pozycji brak – na końcu menu).
+ * Wersja 2 przenosi pod „Duszpasterstwo” zakładkę dodaną wcześniej na najwyższym poziomie.
+ * Później pozycję można dowolnie przenieść lub usunąć w Wygląd → Menu – nie wróci.
  */
 function parafia_standardy_migracja() {
-    if ( (int) get_option( 'parafia_mrozy_standardy_wersja', 0 ) >= 1 ) {
+    $wersja = (int) get_option( 'parafia_mrozy_standardy_wersja', 0 );
+    if ( $wersja >= 2 ) {
         return;
     }
 
     $strona = get_page_by_path( PARAFIA_STANDARDY_SLUG );
     if ( ! $strona ) {
+        if ( $wersja >= 1 ) {
+            update_option( 'parafia_mrozy_standardy_wersja', 2 );
+            return; // strona celowo usunięta – nie odtwarzamy
+        }
         $id = wp_insert_post( [
             'post_type'    => 'page',
             'post_status'  => 'publish',
@@ -84,24 +101,33 @@ function parafia_standardy_migracja() {
     $menu_id     = isset( $lokalizacje['primary'] ) ? (int) $lokalizacje['primary'] : 0;
 
     if ( $menu_id && wp_get_nav_menu_object( $menu_id ) ) {
-        $jest = false;
-        foreach ( (array) wp_get_nav_menu_items( $menu_id ) as $item ) {
+        $items  = wp_get_nav_menu_items( $menu_id );
+        $rodzic = parafia_standardy_rodzic_menu( $items );
+        $nasza  = null;
+        foreach ( (array) $items as $item ) {
             if ( 'post_type' === $item->type && (int) $item->object_id === (int) $id ) {
-                $jest = true;
+                $nasza = $item;
                 break;
             }
         }
-        if ( ! $jest ) {
+
+        if ( $nasza ) {
+            // Przenieś pod „Duszpasterstwo” tylko zakładkę z najwyższego poziomu.
+            if ( $rodzic && 0 === (int) $nasza->menu_item_parent ) {
+                update_post_meta( $nasza->ID, '_menu_item_menu_item_parent', (string) $rodzic );
+            }
+        } elseif ( $wersja < 1 ) {
             wp_update_nav_menu_item( $menu_id, 0, [
                 'menu-item-title'     => 'Standardy ochrony dzieci',
                 'menu-item-object'    => 'page',
                 'menu-item-object-id' => $id,
                 'menu-item-type'      => 'post_type',
                 'menu-item-status'    => 'publish',
+                'menu-item-parent-id' => $rodzic,
             ] );
         }
     }
 
-    update_option( 'parafia_mrozy_standardy_wersja', 1 );
+    update_option( 'parafia_mrozy_standardy_wersja', 2 );
 }
 add_action( 'init', 'parafia_standardy_migracja', 30 );

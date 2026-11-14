@@ -73,7 +73,7 @@ Pod ogłoszeniami, od listopada 2026 do listopada 2027, pokazuje się sekcja o K
 
 Strona **/standardy-ochrony-dzieci/** z dokumentem parafii (wymóg tzw. „Ustawy Kamilka”): krótki wstęp, ramka „Dziecku dzieje się krzywda?” z telefonem parafii i numerami pomocowymi, spis 9 standardów i załączników oraz pełna treść PDF wyświetlana na stronie (pdf.js) z przyciskiem „Pobierz PDF”.
 
-- **Zakładka w menu dodaje się sama** (raz, po wgraniu motywu): motyw tworzy stronę, jeśli jej nie ma, i dopisuje ją na końcu menu przypisanego do „Menu główne”. Kolejność lub nazwę zmienisz w **Wygląd → Menu**; po usunięciu zakładka nie wróci.
+- **Pozycja w menu dodaje się sama** (raz, po wgraniu motywu): motyw tworzy stronę, jeśli jej nie ma, i dopisuje ją w „Menu główne” jako podstronę **Duszpasterstwo** (gdy takiej pozycji nie ma – na końcu menu). Kolejność lub nazwę zmienisz w **Wygląd → Menu**; po usunięciu pozycja nie wróci.
 - **Nowa wersja dokumentu:** podmień plik `pliki/standardy-ochrony-dzieci.pdf` (ta sama nazwa). Adres zawiera datę pliku, więc odwiedzający od razu zobaczą nową wersję. Jeśli zmienią się tytuły standardów, popraw listę w szablonie.
 - Dodatkowy tekst (np. imię osoby zaufanej) można wpisać w edytorze strony – pojawi się pod wstępem.
 - Pliki: `page-standardy-ochrony-dzieci.php`, `inc/standardy.php`, `css/standardy.css`, `js/standardy.js`, `pliki/standardy-ochrony-dzieci.pdf`.
