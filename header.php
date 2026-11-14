@@ -215,6 +215,7 @@ function parafia_mrozy_fallback_menu() {
         </ul>
     </li>';
     echo '<li><a href="' . esc_url( home_url( '/wsparcie/' ) ) . '">Wsparcie</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/standardy-ochrony-dzieci/' ) ) . '">Standardy ochrony dzieci</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/kontakt/' ) ) . '">Kontakt</a></li>';
     echo '</ul>';
 }
