@@ -2,7 +2,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'PARAFIA_MROZY_VERSION', '1.5.0' );
+define( 'PARAFIA_MROZY_VERSION', '1.6.0' );
 
 require_once get_template_directory() . '/inc/webp.php';
 require_once get_template_directory() . '/inc/galeria.php';
@@ -10,6 +10,7 @@ require_once get_template_directory() . '/inc/ustawienia.php';
 require_once get_template_directory() . '/inc/uprawnienia.php';
 require_once get_template_directory() . '/inc/adwent.php';
 require_once get_template_directory() . '/inc/kongres.php';
+require_once get_template_directory() . '/inc/standardy.php';
 
 function parafia_mrozy_setup() {
     load_theme_textdomain( 'parafia-mrozy', get_template_directory() . '/languages' );
@@ -59,6 +60,7 @@ function parafia_mrozy_page_templates_map() {
         'page-bielanki.php'        => 'Bielanki',
         'page-galerie.php'         => 'Galerie',
         'page-wirtualny-spacer.php'=> 'Wirtualny spacer',
+        'page-standardy-ochrony-dzieci.php' => 'Standardy ochrony dzieci',
     ];
 }
 
@@ -2375,6 +2377,7 @@ function parafia_seo_get_content( WP_REST_Request $req ) {
             'page-transmisje.php'   => 'Transmisje Mszy Świętych na żywo z sanktuariów w Polsce i na świecie — Jasna Góra, Licheń, Watykan, Fatima i inne.',
             'page-lso.php'          => 'Liturgiczna Służba Ołtarza — ministranci i lektorzy w parafii Mrozy.',
             'page-group.php'        => 'Grupy parafialne i wspólnoty działające w parafii Mrozy.',
+            'page-standardy-ochrony-dzieci.php' => 'Standardy ochrony dzieci w parafii pw. św. Teresy od Dzieciątka Jezus w Mrozach — zasady bezpieczeństwa, sposób zgłaszania krzywdy i pełna treść dokumentu.',
         ];
 
         if ( isset( $template_context[ $template ] ) ) {

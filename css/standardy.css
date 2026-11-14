@@ -1,0 +1,267 @@
+/* Standardy ochrony dzieci (page-standardy-ochrony-dzieci.php) */
+
+.sod {
+    max-width: 920px;
+    padding-bottom: 70px;
+}
+
+.sod-intro {
+    margin: 50px auto 40px;
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--color-text);
+    border-left: 3px solid var(--color-gold);
+    padding-left: 22px;
+}
+
+.sod-intro p + p,
+.sod-intro__extra {
+    margin-top: 14px;
+}
+
+.sod-section-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 20px;
+}
+
+/* --- Pomoc / zgłoszenia --- */
+.sod-help {
+    background: var(--color-light-gray);
+    border: 1px solid var(--color-mid-gray);
+    border-top: 4px solid var(--color-gold);
+    border-radius: 10px;
+    padding: 28px 30px;
+    margin-bottom: 50px;
+}
+
+.sod-help__title {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 16px;
+}
+
+.sod-help__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+}
+
+.sod-help__col p {
+    line-height: 1.75;
+    color: var(--color-text);
+    margin: 0 0 14px;
+}
+
+.sod-help__contact,
+.sod-help__phones {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sod-help__contact li {
+    margin-bottom: 6px;
+    color: var(--color-text);
+}
+
+.sod-help__contact a {
+    color: var(--color-gold-dark);
+    font-weight: 600;
+}
+
+.sod-help__phones li {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-mid-gray);
+}
+
+.sod-help__phones li:first-child { padding-top: 0; }
+.sod-help__phones li:last-child  { border-bottom: 0; }
+
+.sod-help__phones a {
+    color: var(--color-gold-dark);
+    font-size: 1.15rem;
+    text-decoration: none;
+}
+
+.sod-help__phones a:hover,
+.sod-help__phones a:focus-visible { text-decoration: underline; }
+
+.sod-help__phones span {
+    font-size: 0.88rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+}
+
+/* --- Spis treści --- */
+.sod-toc { margin-bottom: 50px; }
+
+.sod-toc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+}
+
+.sod-toc__item {
+    background: var(--card-bg, var(--color-white));
+    border: 1px solid var(--color-mid-gray);
+    border-radius: 8px;
+    padding: 14px 16px;
+}
+
+.sod-toc__nr {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-gold-dark);
+    margin-bottom: 4px;
+}
+
+.sod-toc__name {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-text);
+}
+
+.sod-toc__annex-label {
+    margin: 26px 0 8px;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.sod-toc__annex {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--color-text);
+    line-height: 1.9;
+}
+
+/* --- Dokument --- */
+.sod-doc__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.sod-doc__head .sod-section-title { margin: 0; }
+
+.sod-doc__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.sod-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 2px solid var(--color-gold);
+    border-radius: 6px;
+    color: var(--color-text);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.sod-btn:hover,
+.sod-btn:focus-visible {
+    background: var(--color-gold);
+    color: #1a1a1a;
+}
+
+.sod-btn--gold {
+    background: var(--color-gold);
+    color: #1a1a1a;
+}
+
+.sod-btn--gold:hover,
+.sod-btn--gold:focus-visible {
+    background: var(--color-gold-dark);
+    border-color: var(--color-gold-dark);
+    color: #fff;
+}
+
+.sod-viewer {
+    background: var(--color-light-gray);
+    border: 1px solid var(--color-mid-gray);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sod-viewer__loading,
+.sod-viewer__error {
+    text-align: center;
+    padding: 40px 10px;
+    color: var(--color-text-light);
+    margin: 0;
+}
+
+.sod-viewer__error a { color: var(--color-gold-dark); font-weight: 600; }
+
+.sod-page {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.sod-page canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.sod-page__nr {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+}
+
+/* --- Tryb ciemny --- */
+[data-theme="dark"] .sod-intro { color: var(--text-primary); border-left-color: var(--color-gold-dark); }
+[data-theme="dark"] .sod-help,
+[data-theme="dark"] .sod-viewer { background: var(--bg-secondary); border-color: var(--border-color); }
+[data-theme="dark"] .sod-help { border-top-color: var(--color-gold); }
+[data-theme="dark"] .sod-help__phones li { border-color: var(--border-color); }
+[data-theme="dark"] .sod-help__phones a,
+[data-theme="dark"] .sod-help__contact a,
+[data-theme="dark"] .sod-toc__nr,
+[data-theme="dark"] .sod-viewer__error a { color: var(--color-gold-light); }
+[data-theme="dark"] .sod-toc__item { border-color: var(--border-color); }
+[data-theme="dark"] .sod-btn { color: var(--text-primary); }
+[data-theme="dark"] .sod-btn:hover,
+[data-theme="dark"] .sod-btn--gold { color: #1a1a1a; }
+[data-theme="dark"] .sod-page { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6); }
+
+/* --- Telefon --- */
+@media (max-width: 720px) {
+    .sod-help { padding: 22px 18px; }
+    .sod-help__grid { grid-template-columns: 1fr; gap: 18px; }
+    .sod-viewer { padding: 8px; gap: 10px; }
+    .sod-doc__actions { width: 100%; }
+    .sod-doc__actions .sod-btn { flex: 1 1 auto; justify-content: center; }
+}
