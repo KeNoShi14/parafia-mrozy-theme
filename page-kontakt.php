@@ -18,6 +18,9 @@ if ( isset( $_POST['pm_contact_nonce'] ) && wp_verify_nonce( sanitize_text_field
     } elseif ( ! is_email( $email ) ) {
         $form_error   = true;
         $form_message = 'Podany adres e-mail jest nieprawidłowy.';
+    } elseif ( true !== ( $turnstile = parafia_turnstile_verify() ) ) {
+        $form_error   = true;
+        $form_message = $turnstile;
     } else {
         $to      = pm_get( 'parafia_email', 'parafiamrozy@gmail.com' );
         $subject_mail = '[Kontakt] ' . $subject;
@@ -203,6 +206,8 @@ if ( isset( $_POST['pm_contact_nonce'] ) && wp_verify_nonce( sanitize_text_field
                                 placeholder="Treść wiadomości..."
                             ><?php echo esc_textarea( $_POST['pm_message'] ?? '' ); ?></textarea>
                         </div>
+
+                        <?php parafia_turnstile_field( 'kontakt' ); ?>
 
                         <p class="contact-required-note"><span aria-hidden="true">*</span> Pola obowiązkowe</p>
 
