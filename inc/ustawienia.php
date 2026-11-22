@@ -74,6 +74,10 @@ function parafia_mrozy_pola_ustawien() {
         'pm_stopka_nazwa'        => [ 'Nazwa parafii w stopce', 'textarea', "Parafia Rzymskokatolicka\npw. św. Teresy od Dzieciątka Jezus\nw Mrozach", 'stopka', 'Każdy wiersz to osobna linia pod logo.' ],
         'pm_stopka_linki'        => [ 'Przydatne strony (jedna w wierszu)', 'textarea', "Niezbędnik Katolika | https://niezbednik.niedziela.pl/\nKatolicka Agencja Informacyjna | https://ekai.pl/\nVatican News | https://www.vaticannews.va/pl.html\nDiecezja Warszawsko-Praska | https://diecezja.waw.pl/\nIdziemy | https://www.idziemy.pl/\nGość niedzielny | https://gosc.pl/\nMały gość | https://malygosc.pl/", 'stopka', 'Format: Nazwa | adres. Zostaw puste, aby ukryć listę.' ],
         'pm_stopka_podpis'       => [ 'Podpis twórcy', 'text', 'Stworzone z ❤️ przez Kacper Makowski na wyższą Chwałę Bożą', 'stopka', 'Zostaw puste, aby ukryć.' ],
+
+        // Cloudflare Turnstile
+        'pm_turnstile_site_key'   => [ 'Klucz witryny (Site Key)', 'text', '', 'turnstile', 'Cloudflare → Turnstile → Add widget. Domena: adres tej strony.' ],
+        'pm_turnstile_secret_key' => [ 'Klucz tajny (Secret Key)', 'sekret', '', 'turnstile', 'Ze względów bezpieczeństwa zapisany klucz nie jest wyświetlany. Zostaw puste, aby go nie zmieniać; wpisz „-”, aby usunąć.' ],
     ];
 }
 
@@ -88,6 +92,7 @@ function parafia_mrozy_sekcje_ustawien() {
         'rocznica'   => [ 'Licznik do rocznicy', '' ],
         'cytat'      => [ 'Cytat na stronie głównej', '' ],
         'stopka'     => [ 'Stopka', '' ],
+        'turnstile'  => [ 'Cloudflare Turnstile (ochrona formularza kontaktowego)', 'Gdy oba klucze są wpisane, na stronie Kontakt pojawia się weryfikacja „Nie jestem robotem”. Stałe PARAFIA_TURNSTILE_SITE_KEY / PARAFIA_TURNSTILE_SECRET_KEY w wp-config.php mają pierwszeństwo.' ],
     ];
 }
 
@@ -232,6 +237,8 @@ function parafia_mrozy_strona_ustawien() {
                                     <?php endif; ?>
                                 <?php elseif ( 'textarea' === $pole[1] || 'tekst_html' === $pole[1] ) : ?>
                                     <textarea id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $nazwa ); ?>" rows="<?php echo 'tekst_html' === $pole[1] ? 6 : 5; ?>" class="large-text"><?php echo esc_textarea( $wartosc ); ?></textarea>
+                                <?php elseif ( 'sekret' === $pole[1] ) : ?>
+                                    <input type="password" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $nazwa ); ?>" value="" class="regular-text" autocomplete="new-password" placeholder="<?php echo esc_attr( '' !== $wartosc ? '•••••••• (zapisany)' : '' ); ?>">
                                 <?php elseif ( 'number' === $pole[1] ) : ?>
                                     <input type="number" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $nazwa ); ?>" value="<?php echo esc_attr( $wartosc ); ?>" min="1" max="24" class="small-text">
                                 <?php else : ?>
@@ -263,6 +270,15 @@ function parafia_mrozy_zapisz_ustawienia() {
             continue;
         }
         $wartosc = parafia_mrozy_oczysc_pole( $pole, $wejscie[ $klucz ] );
+        if ( 'sekret' === $pole[1] ) {
+            // Puste pole = bez zmian (klucz nie jest wyświetlany w formularzu), „-” = usuń.
+            if ( '' === $wartosc ) {
+                continue;
+            }
+            if ( '-' === $wartosc ) {
+                $wartosc = '';
+            }
+        }
         if ( 'adwent' === $pole[1] ) {
             // Ten sam przełącznik co w menu Adwent („Pokazuj widżet na stronie głównej”).
             if ( defined( 'PARAFIA_ADWENT_OPCJA' ) ) {

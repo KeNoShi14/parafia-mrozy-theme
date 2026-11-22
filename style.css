@@ -2936,6 +2936,11 @@ body.a11y-high-contrast.a11y-desaturate { filter: contrast(1.5) saturate(20%); }
     min-height: 140px;
 }
 
+.contact-turnstile {
+    margin: 4px 0 16px;
+    min-height: 65px; /* rezerwuje miejsce na widżet, żeby przycisk nie „skakał” */
+}
+
 .contact-required-note {
     font-size: 0.75rem;
     color: rgba(0,0,0,0.4);

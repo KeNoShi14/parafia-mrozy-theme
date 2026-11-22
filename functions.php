@@ -11,6 +11,7 @@ require_once get_template_directory() . '/inc/uprawnienia.php';
 require_once get_template_directory() . '/inc/adwent.php';
 require_once get_template_directory() . '/inc/kongres.php';
 require_once get_template_directory() . '/inc/standardy.php';
+require_once get_template_directory() . '/inc/turnstile.php';
 
 function parafia_mrozy_setup() {
     load_theme_textdomain( 'parafia-mrozy', get_template_directory() . '/languages' );
